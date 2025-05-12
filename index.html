@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jauge à secousses</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      padding: 50px;
+    }
+    progress {
+      width: 80%;
+      height: 30px;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Remplis la jauge en secouant ton téléphone !</h1>
+  <progress id="shakeGauge" value="0" max="100"></progress>
+  <br>
+  <button id="startButton">Activer les capteurs</button>
+
+  <script>
+    let lastShakeTime = 0;
+
+    function fillGauge() {
+      const gauge = document.getElementById('shakeGauge');
+      gauge.value = Math.min(100, gauge.value + 10);
+    }
+
+    function handleMotion(event) {
+      const acc = event.accelerationIncludingGravity;
+      const accTotal = Math.sqrt(acc.x ** 2 + acc.y ** 2 + acc.z ** 2);
+
+      const now = Date.now();
+      if (accTotal > 20 && now - lastShakeTime > 1000) {
+        lastShakeTime = now;
+        fillGauge();
+      }
+    }
+
+    document.getElementById('startButton').addEventListener('click', () => {
+      if (typeof DeviceMotionEvent.requestPermission === 'function') {
+        DeviceMotionEvent.requestPermission()
+          .then(permissionState => {
+            if (permissionState === 'granted') {
+              window.addEventListener('devicemotion', handleMotion);
+              alert("Capteurs activés ! Secoue le téléphone.");
+            }
+          })
+          .catch(console.error);
+      } else {
+        // Pour Android ou navigateurs qui n'ont pas besoin de permission
+        window.addEventListener('devicemotion', handleMotion);
+        alert("Capteurs activés ! Secoue le téléphone.");
+      }
+    });
+  </script>
+</body>
+</html>
