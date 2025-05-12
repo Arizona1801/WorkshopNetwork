@@ -4,35 +4,30 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Jauge à secousses</title>
-  <style>
-    body {
-      font-family: sans-serif;
-      text-align: center;
-      padding: 50px;
-    }
-    progress {
-      width: 80%;
-      height: 30px;
-    }
-    button {
-      margin-top: 20px;
-      padding: 10px 20px;
-      font-size: 16px;
-    }
-  </style>
+  <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
-  <h1>Remplis la jauge en secouant ton téléphone !</h1>
-  <progress id="shakeGauge" value="0" max="100"></progress>
+  <h1>Vide la jauge en secouant ton téléphone !</h1>
+  <progress id="shakeGauge" value="100" max="100"></progress> <!-- départ à 100% -->
   <br>
   <button id="startButton">Activer les capteurs</button>
+  <div id="message"></div>
 
   <script>
     let lastShakeTime = 0;
+    let emptyNotified = false;
 
-    function fillGauge() {
+    function emptyGauge() {
       const gauge = document.getElementById('shakeGauge');
-      gauge.value = Math.min(100, gauge.value + 10);
+      if (gauge.value > 0) {
+        gauge.value = Math.max(0, gauge.value - 10); // Retire 10, sans passer sous 0
+        if (gauge.value === 0 && !emptyNotified) {
+          emptyNotified = true;
+          alert("💥 La jauge est complètement vide !");
+          document.getElementById('message').textContent = "Jauge vide 💥";
+        }
+      }
     }
 
     function handleMotion(event) {
@@ -42,7 +37,7 @@
       const now = Date.now();
       if (accTotal > 20 && now - lastShakeTime > 1000) {
         lastShakeTime = now;
-        fillGauge();
+        emptyGauge(); // on vide !
       }
     }
 
@@ -52,14 +47,13 @@
           .then(permissionState => {
             if (permissionState === 'granted') {
               window.addEventListener('devicemotion', handleMotion);
-              alert("Capteurs activés ! Secoue le téléphone.");
+              alert("Capteurs activés ! Secoue le téléphone pour vider la jauge.");
             }
           })
           .catch(console.error);
       } else {
-        // Pour Android ou navigateurs qui n'ont pas besoin de permission
         window.addEventListener('devicemotion', handleMotion);
-        alert("Capteurs activés ! Secoue le téléphone.");
+        alert("Capteurs activés ! Secoue le téléphone pour vider la jauge.");
       }
     });
   </script>
