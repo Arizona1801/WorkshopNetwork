@@ -66,7 +66,6 @@
       color: white;
       margin-top: 10px;
     }
-
   </style>
 </head>
 <body>
@@ -85,11 +84,15 @@
   <script>
     let lastShakeTime = 0;
 
+    // Initialiser la largeur de la jauge
+    const remplissage = document.getElementById('remplissage');
+    let currentWidth = 100; // Valeur initiale de 100%
+
     function emptyGauge() {
-      const remplissage = document.getElementById('remplissage');
-      let currentWidth = parseFloat(remplissage.style.width);
-      currentWidth = Math.max(0, currentWidth - 10); // Réduit la jauge de 10%
+      // Diminue la jauge de 10%
+      currentWidth = Math.max(0, currentWidth - 10);
       remplissage.style.width = currentWidth + '%';
+      console.log(`Jauge vide à : ${currentWidth}%`);
     }
 
     function handleMotion(event) {
@@ -97,6 +100,8 @@
       const accTotal = Math.sqrt(acc.x ** 2 + acc.y ** 2 + acc.z ** 2);
 
       const now = Date.now();
+      console.log(`Accélération totale : ${accTotal}`);
+
       if (accTotal > 20 && now - lastShakeTime > 1000) {
         lastShakeTime = now;
         emptyGauge();
