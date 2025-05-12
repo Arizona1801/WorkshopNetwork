@@ -35,7 +35,7 @@
       const now = Date.now();
       if (accTotal > 20 && now - lastShakeTime > 1000) {
         lastShakeTime = now;
-        fillGauge();
+        emptyGauge();
       }
     }
 
