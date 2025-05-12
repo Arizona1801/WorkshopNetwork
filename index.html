@@ -10,16 +10,22 @@
 
 <body>
   <h1>Remplis la jauge en secouant ton téléphone !</h1>
-  <progress id="shakeGauge" value="0" max="100"></progress>
+  <progress id="shakeGauge" value="100" max="100"></progress> 
   <br>
   <button id="startButton">Activer les capteurs</button>
 
   <script>
+
     let lastShakeTime = 0;
 
-    function fillGauge() {
+    /*function fillGauge() {
       const gauge = document.getElementById('shakeGauge');
       gauge.value = Math.min(100, gauge.value + 10);
+    }*/
+
+    function emptyGauge() {
+      const gauge = document.getElementById('shakeGauge');
+      gauge.value = Math.max(0, gauge.value - 10);
     }
 
     function handleMotion(event) {
