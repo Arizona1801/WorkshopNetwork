@@ -19,12 +19,6 @@
       padding: 10px 20px;
       font-size: 16px;
     }
-    #message {
-      margin-top: 20px;
-      font-size: 18px;
-      color: green;
-      font-weight: bold;
-    }
   </style>
 </head>
 <body>
@@ -32,23 +26,13 @@
   <progress id="shakeGauge" value="0" max="100"></progress>
   <br>
   <button id="startButton">Activer les capteurs</button>
-  <div id="message"></div>
 
   <script>
     let lastShakeTime = 0;
-    let fullNotified = false; // Pour éviter plusieurs alertes
 
     function fillGauge() {
       const gauge = document.getElementById('shakeGauge');
-      if (gauge.value < 100) {
-        gauge.value = Math.min(100, gauge.value + 10);
-
-        if (gauge.value === 100 && !fullNotified) {
-          fullNotified = true;
-          alert("🎉 Bravo ! Jauge remplie à 100% !");
-          document.getElementById('message').textContent = "Jauge remplie 🎉";
-        }
-      }
+      gauge.value = Math.min(100, gauge.value + 10);
     }
 
     function handleMotion(event) {
@@ -73,6 +57,7 @@
           })
           .catch(console.error);
       } else {
+        // Pour Android ou navigateurs qui n'ont pas besoin de permission
         window.addEventListener('devicemotion', handleMotion);
         alert("Capteurs activés ! Secoue le téléphone.");
       }
