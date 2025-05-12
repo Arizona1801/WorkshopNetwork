@@ -1,31 +1,95 @@
 <!DOCTYPE html>
 <html lang="fr">
-    
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Jauge à secousses</title>
-  <link rel="stylesheet" href="styles.css">
-</head>
+  <title>Jauge à secousses Pixel Art</title>
+  <style>
+    body {
+      background: #222;
+      padding: 20px;
+      font-family: Arial, sans-serif;
+    }
 
+    h1 {
+      color: white;
+    }
+
+    /* Style de la jauge pixel art */
+    .jauge {
+      width: 300px;
+      height: 16px;
+      background-color: #333; /* fond vide */
+      border: 1px solid #000;
+      position: relative;
+      overflow: hidden;
+      image-rendering: pixelated; /* Style pixelisé */
+    }
+
+    .remplissage {
+      background-color: #73CA45; /* couleur de la progression */
+      height: 100%;
+      width: 100%; /* Valeur initiale à 100% */
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 1;
+      overflow: visible;
+      border-radius: 0px 8px 8px 0px; /* Arrondi à gauche seulement */
+    }
+
+    .remplissage img.bout {
+      position: absolute;
+      top: 0;
+      right: -2px; /* décale légèrement pour que l'arrondi dépasse */
+      height: 100%;
+      image-rendering: pixelated;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    /* Style du bouton pour activer les capteurs */
+    #startButton {
+      padding: 10px 20px;
+      background-color: #444;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    #startButton:hover {
+      background-color: #555;
+    }
+
+    /* Jauge de texte */
+    #text {
+      color: white;
+      margin-top: 10px;
+    }
+
+  </style>
+</head>
 <body>
+
   <h1>Remplis la jauge en secouant ton téléphone !</h1>
-  <progress id="shakeGauge" value="100" max="100"></progress> 
-  <br>
+  <div class="jauge">
+    <div class="remplissage" id="remplissage">
+      <img src="barre.png" class="bout" />
+    </div>
+  </div>
+  
+  <p id="text">Secoue le téléphone pour vider la jauge.</p>
+  
   <button id="startButton">Activer les capteurs</button>
 
   <script>
-
     let lastShakeTime = 0;
 
-    /*function fillGauge() {
-      const gauge = document.getElementById('shakeGauge');
-      gauge.value = Math.min(100, gauge.value + 10);
-    }*/
-
     function emptyGauge() {
-      const gauge = document.getElementById('shakeGauge');
-      gauge.value = Math.max(0, gauge.value - 10);
+      const remplissage = document.getElementById('remplissage');
+      let currentWidth = parseFloat(remplissage.style.width);
+      currentWidth = Math.max(0, currentWidth - 10); // Réduit la jauge de 10%
+      remplissage.style.width = currentWidth + '%';
     }
 
     function handleMotion(event) {
@@ -50,11 +114,11 @@
           })
           .catch(console.error);
       } else {
-        // Pour Android ou navigateurs qui n'ont pas besoin de permission
         window.addEventListener('devicemotion', handleMotion);
         alert("Capteurs activés ! Secoue le téléphone.");
       }
     });
   </script>
+
 </body>
 </html>
