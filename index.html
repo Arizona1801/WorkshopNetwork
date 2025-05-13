@@ -3,12 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Jauge à secousses Pixel Art</title>
+  <title>Jauge verticale à secousses Pixel Art</title>
   <style>
     body {
       background: #222;
       padding: 20px;
       font-family: Arial, sans-serif;
+      color: white;
     }
 
     h1 {
@@ -16,38 +17,30 @@
     }
 
     .jauge {
-      width: 300px;
-      height: 16px;
+      width: 16px;
+      height: 300px;
       background-color: #333;
       border: 1px solid #000;
       position: relative;
       overflow: hidden;
       image-rendering: pixelated;
+      margin: 20px 0;
     }
 
     .remplissage {
-      height: 100%;
       width: 100%;
-      position: absolute;
-      top: 0;
-      left: 0;
-      z-index: 1;
-      overflow: visible;
-      border-radius: 0px 8px 8px 0px;
-      transition: background-color 0.3s, width 0.3s;
-    }
-
-    .remplissage img.bout {
-      position: absolute;
-      top: 0;
-      right: -2px;
       height: 100%;
-      image-rendering: pixelated;
-      pointer-events: none;
-      z-index: 2;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      border-radius: 8px 8px 0 0;
+      transition: height 0.3s, background-color 0.3s;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      flex-direction: column;
     }
 
-    /* Couleurs dynamiques */
     .remplissage.vert {
       background-color: #73CA45;
     }
@@ -59,6 +52,17 @@
     .remplissage.rouge {
       background-color: #D64541;
     }
+        
+    .remplissage .bout {
+      position: absolute;
+      top: 0;
+      width: 100%;
+      image-rendering: pixelated;
+      pointer-events: none;
+      z-index: 2;
+      transform-origin: center; /* optionnel : point de rotation */
+    }
+
 
     #startButton {
       padding: 10px 20px;
@@ -75,13 +79,11 @@
     }
 
     #text {
-      color: white;
       margin-top: 10px;
     }
 
     #percentage {
       font-weight: bold;
-      color: #fff;
     }
   </style>
 </head>
@@ -91,7 +93,9 @@
 
   <div class="jauge">
     <div class="remplissage vert" id="remplissage">
-      <img src="barre.png" class="bout" />
+      <!-- Bout noir en SVG -->
+      <img src="barre.svg" class="bout" />
+
     </div>
   </div>
 
@@ -109,10 +113,9 @@
     let currentWidth = 100;
 
     function updateGauge() {
-      remplissage.style.width = currentWidth + '%';
+      remplissage.style.height = currentWidth + '%';
       pourcentageEl.textContent = currentWidth + '%';
 
-      // Mettre à jour la couleur
       remplissage.classList.remove('vert', 'orange', 'rouge');
       if (currentWidth > 60) {
         remplissage.classList.add('vert');
@@ -142,10 +145,10 @@
     }
 
     document.getElementById('startButton').addEventListener('click', () => {
-      if (typeof DeviceMotionEvent.requestPermission === 'function') {
+      if (typeof DeviceMotionEvent?.requestPermission === 'function') {
         DeviceMotionEvent.requestPermission()
-          .then(permissionState => {
-            if (permissionState === 'granted') {
+          .then(state => {
+            if (state === 'granted') {
               window.addEventListener('devicemotion', handleMotion);
               alert("Capteurs activés ! Secoue le téléphone.");
             }
@@ -156,6 +159,9 @@
         alert("Capteurs activés ! Secoue le téléphone.");
       }
     });
+
+    // Initialiser l'affichage
+    updateGauge();
   </script>
 
 </body>
