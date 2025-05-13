@@ -33,6 +33,7 @@
 
         // Met à jour le remplissage du bouton
         function updateButtonFill() {
+            // Utilisation d'un dégradé vertical pour le remplissage
             buttonBonus.style.background = `linear-gradient(to top, var(--green) ${fill}%, #bbbec2 ${fill}%)`;
             if (fill >= 100) {
                 buttonBonus.textContent = 'Cliquez !';
