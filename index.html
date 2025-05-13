@@ -1,128 +1,54 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bouton à secousses</title>
-  <style>
-    body {
-      background-color: #111;
-      color: white;
-      font-family: monospace;
-      text-align: center;
-      padding: 50px;
-    }
-
-    #shakeButton {
-      position: relative;
-      width: 200px;
-      height: 60px;
-      border: 2px solid #fff;
-      background-color: #222;
-      margin: 0 auto;
-      cursor: pointer;
-      overflow: hidden;
-      image-rendering: pixelated;
-    }
-
-    #fillBar {
-      position: absolute;
-      top: 0;
-      left: 0;
-      height: 100%;
-      background-color: #73CA45;
-      width: 0%;
-      z-index: 1;
-      transition: width 0.2s;
-    }
-
-    #buttonText {
-      position: relative;
-      z-index: 2;
-      line-height: 60px;
-      font-weight: bold;
-      pointer-events: none;
-    }
-
-    #percentage {
-      margin-top: 20px;
-      font-size: 18px;
-    }
-
-    #startButton {
-      margin-top: 30px;
-      padding: 10px 20px;
-      background: #444;
-      border: none;
-      color: white;
-      font-size: 16px;
-      cursor: pointer;
-    }
-
-    #startButton:hover {
-      background: #666;
-    }
-  </style>
+    <meta charset="UTF-8" />
+    <title>title</title>    
+    <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+    <div class="container">
+        <div class="header">
+            <h1 class="title">Equipe sabotage</h1>
+            <p class="subtitle">Secoue ton téléphone pour siphonner l’essence de la fusée</p>
+        </div>
+        
+        <img class="secouepng" src="secoue.png" alt="rocket" />
 
-  <h1>Remplis le bouton en secouant !</h1>
+        <div class="buttonContent">
+            <div class="buttonBorder">
+                <img class="borderSvg" src="border.svg" alt="">
+                <button class="buttonBonus" id="bonusButton">Bonus</button>
+            </div>
+            <p class="subButton">Progression x2</p>
+        </div>
 
-  <div id="shakeButton">
-    <div id="fillBar"></div>
-    <span id="buttonText">SHAKE IT!</span>
-  </div>
+        <p class="bottomText">Secoue!</p>
 
-  <div id="percentage">0%</div>
+    </div>
 
-  <button id="startButton">Activer les capteurs</button>
+    <script>
+        let shakeThreshold = 15; // Sensibilité des secousses
+        let lastUpdate = 0;
+        let progress = 0;
+        const button = document.getElementById('bonusButton');
 
-  <script>
-    let fill = 0;
-    let lastShake = 0;
+        window.addEventListener('devicemotion', (event) => {
+            const acceleration = event.accelerationIncludingGravity;
+            const currentTime = new Date().getTime();
 
-    const fillBar = document.getElementById('fillBar');
-    const percentageText = document.getElementById('percentage');
+            if ((currentTime - lastUpdate) > 100) {
+                const deltaTime = currentTime - lastUpdate;
+                lastUpdate = currentTime;
 
-    function updateFill() {
-      fillBar.style.width = fill + '%';
-      percentageText.textContent = fill + '%';
+                const speed = Math.abs(acceleration.x + acceleration.y + acceleration.z);
 
-      if (fill >= 100) {
-        document.getElementById('buttonText').textContent = "C'EST PLEIN !";
-        window.removeEventListener('devicemotion', handleShake);
-      }
-    }
-
-    function handleShake(event) {
-      const acc = event.accelerationIncludingGravity;
-      const totalAcc = Math.sqrt(acc.x ** 2 + acc.y ** 2 + acc.z ** 2);
-
-      const now = Date.now();
-
-      if (totalAcc > 20 && now - lastShake > 1000) {
-        lastShake = now;
-        fill = Math.min(100, fill + 10);
-        updateFill();
-      }
-    }
-
-    document.getElementById('startButton').addEventListener('click', () => {
-      if (typeof DeviceMotionEvent?.requestPermission === 'function') {
-        DeviceMotionEvent.requestPermission().then(result => {
-          if (result === 'granted') {
-            window.addEventListener('devicemotion', handleShake);
-            alert('Capteurs activés. Secoue !');
-          }
-        }).catch(console.error);
-      } else {
-        window.addEventListener('devicemotion', handleShake);
-        alert('Capteurs activés. Secoue !');
-      }
-    });
-
-    updateFill(); // init
-  </script>
-
+                if (speed > shakeThreshold) {
+                    progress += 10; // Augmente la progression
+                    if (progress > 100) progress = 100; // Limite à 100%
+                    button.style.background = `linear-gradient(to top, #4caf50 ${progress}%, #fff ${progress}%)`;
+                }
+            }
+        });
+    </script>
 </body>
 </html>
