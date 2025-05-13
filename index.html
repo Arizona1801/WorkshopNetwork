@@ -17,7 +17,7 @@
         <div class="buttonContent">
             <div class="buttonBorder">
                 <img class="borderSvg" src="border.svg" alt="">
-                <button class="buttonBonus" id="bonusButton">Bonus</button>
+                <button class="buttonBonus">Bonus</button>
             </div>
             <p class="subButton">Progression x2</p>
         </div>
@@ -25,30 +25,61 @@
         <p class="bottomText">Secoue!</p>
 
     </div>
-
+    
     <script>
-        let shakeThreshold = 15; // Sensibilité des secousses
-        let lastUpdate = 0;
-        let progress = 0;
-        const button = document.getElementById('bonusButton');
+        let fill = 0; // Progression initiale
+        let lastShake = 0; // Dernière secousse détectée
+        const buttonBonus = document.querySelector('.buttonBonus');
 
-        window.addEventListener('devicemotion', (event) => {
-            const acceleration = event.accelerationIncludingGravity;
-            const currentTime = new Date().getTime();
+        // Met à jour le remplissage du bouton
+        function updateButtonFill() {
+            buttonBonus.style.background = `linear-gradient(to top, var(--green) ${fill}%, #bbbec2 ${fill}%)`;
+            if (fill >= 100) {
+                buttonBonus.textContent = 'Cliquez !';
+                buttonBonus.disabled = false; // Active le bouton
+            } else {
+                buttonBonus.textContent = 'Bonus';
+                buttonBonus.disabled = true; // Désactive le bouton
+            }
+        }
 
-            if ((currentTime - lastUpdate) > 100) {
-                const deltaTime = currentTime - lastUpdate;
-                lastUpdate = currentTime;
+        // Gère la détection des secousses
+        function handleShake(event) {
+            const acc = event.accelerationIncludingGravity;
+            const totalAcc = Math.sqrt(acc.x ** 2 + acc.y ** 2 + acc.z ** 2);
 
-                const speed = Math.abs(acceleration.x + acceleration.y + acceleration.z);
+            const now = Date.now();
+            if (totalAcc > 20 && now - lastShake > 500) { // Seuil de secousse et délai
+                lastShake = now;
+                fill = Math.min(100, fill + 10); // Augmente la progression
+                updateButtonFill();
+            }
+        }
 
-                if (speed > shakeThreshold) {
-                    progress += 10; // Augmente la progression
-                    if (progress > 100) progress = 100; // Limite à 100%
-                    button.style.background = `linear-gradient(to top, #4caf50 ${progress}%, #fff ${progress}%)`;
-                }
+        // Vide la jauge lorsque le bouton est cliqué
+        buttonBonus.addEventListener('click', () => {
+            if (fill >= 100) {
+                fill = 0; // Réinitialise la jauge
+                updateButtonFill();
+                alert('Jauge vidée, bonus activé !');
             }
         });
+
+        // Active les capteurs de mouvement
+        window.addEventListener('load', () => {
+            if (typeof DeviceMotionEvent?.requestPermission === 'function') {
+                DeviceMotionEvent.requestPermission().then(result => {
+                    if (result === 'granted') {
+                        window.addEventListener('devicemotion', handleShake);
+                    }
+                }).catch(console.error);
+            } else {
+                window.addEventListener('devicemotion', handleShake);
+            }
+        });
+
+        // Initialisation
+        updateButtonFill();
     </script>
 </body>
 </html>
