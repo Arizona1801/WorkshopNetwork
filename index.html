@@ -24,6 +24,9 @@
 
         <p class="bottomText">Secoue!</p>
 
+        <!-- Ajoutez ce bouton dans le HTML -->
+        <button id="requestPermission">Activer les capteurs</button>
+
     </div>
     
     <script>
@@ -47,12 +50,17 @@
         // Gère la détection des secousses
         function handleShake(event) {
             const acc = event.accelerationIncludingGravity;
+            if (!acc) {
+                console.error('Les données de mouvement ne sont pas disponibles.');
+                return;
+            }
             const totalAcc = Math.sqrt(acc.x ** 2 + acc.y ** 2 + acc.z ** 2);
+            console.log('Total Acceleration:', totalAcc);
 
             const now = Date.now();
-            if (totalAcc > 20 && now - lastShake > 500) { // Seuil de secousse et délai
+            if (totalAcc > 15 && now - lastShake > 500) {
                 lastShake = now;
-                fill = Math.min(100, fill + 10); // Augmente la progression
+                fill = Math.min(100, fill + 10);
                 updateButtonFill();
             }
         }
@@ -68,6 +76,11 @@
 
         // Active les capteurs de mouvement
         window.addEventListener('load', () => {
+            if (!('DeviceMotionEvent' in window)) {
+                alert('Votre appareil ne supporte pas les capteurs de mouvement.');
+                return;
+            }
+
             if (typeof DeviceMotionEvent?.requestPermission === 'function') {
                 DeviceMotionEvent.requestPermission().then(result => {
                     if (result === 'granted') {
@@ -81,6 +94,22 @@
 
         // Initialisation
         updateButtonFill();
+
+        const requestPermissionButton = document.getElementById('requestPermission');
+        requestPermissionButton.addEventListener('click', () => {
+            if (typeof DeviceMotionEvent?.requestPermission === 'function') {
+                DeviceMotionEvent.requestPermission().then(result => {
+                    if (result === 'granted') {
+                        window.addEventListener('devicemotion', handleShake);
+                        requestPermissionButton.style.display = 'none'; // Cache le bouton après activation
+                    } else {
+                        alert('Permission refusée.');
+                    }
+                }).catch(console.error);
+            } else {
+                alert('Votre appareil ne supporte pas DeviceMotionEvent.');
+            }
+        });
     </script>
 </body>
 </html>
