@@ -24,8 +24,6 @@
 
         <p class="bottomText">Secoue!</p>
 
-        <!-- Ajoutez ce bouton dans le HTML -->
-        <button id="requestPermission">Activer les capteurs</button>
 
     </div>
     
@@ -74,42 +72,6 @@
             }
         });
 
-        // Active les capteurs de mouvement
-        window.addEventListener('load', () => {
-            if (!('DeviceMotionEvent' in window)) {
-                alert('Votre appareil ne supporte pas les capteurs de mouvement.');
-                return;
-            }
-
-            if (typeof DeviceMotionEvent?.requestPermission === 'function') {
-                DeviceMotionEvent.requestPermission().then(result => {
-                    if (result === 'granted') {
-                        window.addEventListener('devicemotion', handleShake);
-                    }
-                }).catch(console.error);
-            } else {
-                window.addEventListener('devicemotion', handleShake);
-            }
-        });
-
-        // Initialisation
-        updateButtonFill();
-
-        const requestPermissionButton = document.getElementById('requestPermission');
-        requestPermissionButton.addEventListener('click', () => {
-            if (typeof DeviceMotionEvent?.requestPermission === 'function') {
-                DeviceMotionEvent.requestPermission().then(result => {
-                    if (result === 'granted') {
-                        window.addEventListener('devicemotion', handleShake);
-                        requestPermissionButton.style.display = 'none'; // Cache le bouton après activation
-                    } else {
-                        alert('Permission refusée.');
-                    }
-                }).catch(console.error);
-            } else {
-                alert('Votre appareil ne supporte pas DeviceMotionEvent.');
-            }
-        });
     </script>
 </body>
 </html>
