@@ -3,165 +3,125 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Jauge verticale à secousses Pixel Art</title>
+  <title>Bouton à secousses</title>
   <style>
     body {
-      background: #222;
-      padding: 20px;
-      font-family: Arial, sans-serif;
+      background-color: #111;
       color: white;
+      font-family: monospace;
+      text-align: center;
+      padding: 50px;
     }
 
-    h1 {
-      color: white;
-    }
-
-    .jauge {
-      width: 16px;
-      height: 300px;
-      background-color: #333;
-      border: 1px solid #000;
+    #shakeButton {
       position: relative;
+      width: 200px;
+      height: 60px;
+      border: 2px solid #fff;
+      background-color: #222;
+      margin: 0 auto;
+      cursor: pointer;
       overflow: hidden;
       image-rendering: pixelated;
-      margin: 20px 0;
     }
 
-    .remplissage {
-      width: 100%;
-      height: 100%;
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      border-radius: 8px 8px 0 0;
-      transition: height 0.3s, background-color 0.3s;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      flex-direction: column;
-    }
-
-    .remplissage.vert {
-      background-color: #73CA45;
-    }
-
-    .remplissage.orange {
-      background-color: #F4B942;
-    }
-
-    .remplissage.rouge {
-      background-color: #D64541;
-    }
-        
-    .remplissage .bout {
+    #fillBar {
       position: absolute;
       top: 0;
-      width: 100%;
-      image-rendering: pixelated;
-      pointer-events: none;
+      left: 0;
+      height: 100%;
+      background-color: #73CA45;
+      width: 0%;
+      z-index: 1;
+      transition: width 0.2s;
+    }
+
+    #buttonText {
+      position: relative;
       z-index: 2;
-      transform-origin: center; /* optionnel : point de rotation */
-    }
-
-
-    #startButton {
-      padding: 10px 20px;
-      background-color: #444;
-      color: white;
-      border: none;
-      cursor: pointer;
-      font-size: 16px;
-      margin-top: 10px;
-    }
-
-    #startButton:hover {
-      background-color: #555;
-    }
-
-    #text {
-      margin-top: 10px;
+      line-height: 60px;
+      font-weight: bold;
+      pointer-events: none;
     }
 
     #percentage {
-      font-weight: bold;
+      margin-top: 20px;
+      font-size: 18px;
+    }
+
+    #startButton {
+      margin-top: 30px;
+      padding: 10px 20px;
+      background: #444;
+      border: none;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    #startButton:hover {
+      background: #666;
     }
   </style>
 </head>
 <body>
 
-  <h1>Remplis la jauge en secouant ton téléphone !</h1>
+  <h1>Remplis le bouton en secouant !</h1>
 
-  <div class="jauge">
-    <div class="remplissage vert" id="remplissage">
-      <!-- Bout noir en SVG -->
-      <img src="barre.svg" class="bout" />
-
-    </div>
+  <div id="shakeButton">
+    <div id="fillBar"></div>
+    <span id="buttonText">SHAKE IT!</span>
   </div>
 
-  <p id="text">
-    Secoue le téléphone pour vider la jauge.<br>
-    Niveau : <span id="percentage">100%</span>
-  </p>
+  <div id="percentage">0%</div>
 
   <button id="startButton">Activer les capteurs</button>
 
   <script>
-    let lastShakeTime = 0;
-    const remplissage = document.getElementById('remplissage');
-    const pourcentageEl = document.getElementById('percentage');
-    let currentWidth = 100;
+    let fill = 0;
+    let lastShake = 0;
 
-    function updateGauge() {
-      remplissage.style.height = currentWidth + '%';
-      pourcentageEl.textContent = currentWidth + '%';
+    const fillBar = document.getElementById('fillBar');
+    const percentageText = document.getElementById('percentage');
 
-      remplissage.classList.remove('vert', 'orange', 'rouge');
-      if (currentWidth > 60) {
-        remplissage.classList.add('vert');
-      } else if (currentWidth > 30) {
-        remplissage.classList.add('orange');
-      } else {
-        remplissage.classList.add('rouge');
+    function updateFill() {
+      fillBar.style.width = fill + '%';
+      percentageText.textContent = fill + '%';
+
+      if (fill >= 100) {
+        document.getElementById('buttonText').textContent = "C'EST PLEIN !";
+        window.removeEventListener('devicemotion', handleShake);
       }
-
-      console.log(`Jauge à : ${currentWidth}%`);
     }
 
-    function emptyGauge() {
-      currentWidth = Math.max(0, currentWidth - 10);
-      updateGauge();
-    }
-
-    function handleMotion(event) {
+    function handleShake(event) {
       const acc = event.accelerationIncludingGravity;
-      const accTotal = Math.sqrt(acc.x ** 2 + acc.y ** 2 + acc.z ** 2);
+      const totalAcc = Math.sqrt(acc.x ** 2 + acc.y ** 2 + acc.z ** 2);
 
       const now = Date.now();
-      if (accTotal > 20 && now - lastShakeTime > 1000) {
-        lastShakeTime = now;
-        emptyGauge();
+
+      if (totalAcc > 20 && now - lastShake > 1000) {
+        lastShake = now;
+        fill = Math.min(100, fill + 10);
+        updateFill();
       }
     }
 
     document.getElementById('startButton').addEventListener('click', () => {
       if (typeof DeviceMotionEvent?.requestPermission === 'function') {
-        DeviceMotionEvent.requestPermission()
-          .then(state => {
-            if (state === 'granted') {
-              window.addEventListener('devicemotion', handleMotion);
-              alert("Capteurs activés ! Secoue le téléphone.");
-            }
-          })
-          .catch(console.error);
+        DeviceMotionEvent.requestPermission().then(result => {
+          if (result === 'granted') {
+            window.addEventListener('devicemotion', handleShake);
+            alert('Capteurs activés. Secoue !');
+          }
+        }).catch(console.error);
       } else {
-        window.addEventListener('devicemotion', handleMotion);
-        alert("Capteurs activés ! Secoue le téléphone.");
+        window.addEventListener('devicemotion', handleShake);
+        alert('Capteurs activés. Secoue !');
       }
     });
 
-    // Initialiser l'affichage
-    updateGauge();
+    updateFill(); // init
   </script>
 
 </body>
