@@ -27,7 +27,7 @@
 
 
     </div>
-    
+        
     <script>
         let fill = 0; // Progression initiale
         let lastShake = 0; // Dernière secousse détectée
@@ -35,14 +35,13 @@
 
         // Met à jour le remplissage du bouton
         function updateButtonFill() {
-            // Utilisation d'un dégradé vertical pour le remplissage
             buttonBonus.style.background = `linear-gradient(to top, var(--green) ${fill}%, #bbbec2 ${fill}%)`;
             if (fill >= 100) {
                 buttonBonus.textContent = 'Cliquez !';
-                buttonBonus.disabled = false; // Active le bouton
+                buttonBonus.disabled = false;
             } else {
                 buttonBonus.textContent = 'Bonus';
-                buttonBonus.disabled = true; // Désactive le bouton
+                buttonBonus.disabled = true;
             }
         }
 
@@ -54,7 +53,6 @@
                 return;
             }
             const totalAcc = Math.sqrt(acc.x ** 2 + acc.y ** 2 + acc.z ** 2);
-            console.log('Total Acceleration:', totalAcc);
 
             const now = Date.now();
             if (totalAcc > 15 && now - lastShake > 500) {
@@ -67,11 +65,14 @@
         // Vide la jauge lorsque le bouton est cliqué
         buttonBonus.addEventListener('click', () => {
             if (fill >= 100) {
-                fill = 0; // Réinitialise la jauge
+                fill = 0;
                 updateButtonFill();
                 alert('Jauge vidée, bonus activé !');
             }
         });
+
+        // Demande la permission dès que la page est chargée
+        window.addEventListener('devicemotion', handleShake);
 
     </script>
 </body>
