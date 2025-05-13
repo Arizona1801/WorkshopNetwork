@@ -15,40 +15,51 @@
       color: white;
     }
 
-    /* Style de la jauge pixel art */
     .jauge {
       width: 300px;
       height: 16px;
-      background-color: #333; /* fond vide */
+      background-color: #333;
       border: 1px solid #000;
       position: relative;
       overflow: hidden;
-      image-rendering: pixelated; /* Style pixelisé */
+      image-rendering: pixelated;
     }
 
     .remplissage {
-      background-color: #73CA45; /* couleur de la progression */
       height: 100%;
-      width: 100%; /* Valeur initiale à 100% */
+      width: 100%;
       position: absolute;
       top: 0;
       left: 0;
       z-index: 1;
       overflow: visible;
-      border-radius: 0px 8px 8px 0px; /* Arrondi à gauche seulement */
+      border-radius: 0px 8px 8px 0px;
+      transition: background-color 0.3s, width 0.3s;
     }
 
     .remplissage img.bout {
       position: absolute;
       top: 0;
-      right: -2px; /* décale légèrement pour que l'arrondi dépasse */
+      right: -2px;
       height: 100%;
       image-rendering: pixelated;
       pointer-events: none;
       z-index: 2;
     }
 
-    /* Style du bouton pour activer les capteurs */
+    /* Couleurs dynamiques */
+    .remplissage.vert {
+      background-color: #73CA45;
+    }
+
+    .remplissage.orange {
+      background-color: #F4B942;
+    }
+
+    .remplissage.rouge {
+      background-color: #D64541;
+    }
+
     #startButton {
       padding: 10px 20px;
       background-color: #444;
@@ -56,43 +67,67 @@
       border: none;
       cursor: pointer;
       font-size: 16px;
+      margin-top: 10px;
     }
+
     #startButton:hover {
       background-color: #555;
     }
 
-    /* Jauge de texte */
     #text {
       color: white;
       margin-top: 10px;
+    }
+
+    #percentage {
+      font-weight: bold;
+      color: #fff;
     }
   </style>
 </head>
 <body>
 
   <h1>Remplis la jauge en secouant ton téléphone !</h1>
+
   <div class="jauge">
-    <div class="remplissage" id="remplissage">
+    <div class="remplissage vert" id="remplissage">
       <img src="barre.png" class="bout" />
     </div>
   </div>
-  
-  <p id="text">Secoue le téléphone pour vider la jauge.</p>
-  
+
+  <p id="text">
+    Secoue le téléphone pour vider la jauge.<br>
+    Niveau : <span id="percentage">100%</span>
+  </p>
+
   <button id="startButton">Activer les capteurs</button>
 
   <script>
     let lastShakeTime = 0;
-
-    // Initialiser la largeur de la jauge
     const remplissage = document.getElementById('remplissage');
-    let currentWidth = 100; // Valeur initiale de 100%
+    const pourcentageEl = document.getElementById('percentage');
+    let currentWidth = 100;
+
+    function updateGauge() {
+      remplissage.style.width = currentWidth + '%';
+      pourcentageEl.textContent = currentWidth + '%';
+
+      // Mettre à jour la couleur
+      remplissage.classList.remove('vert', 'orange', 'rouge');
+      if (currentWidth > 60) {
+        remplissage.classList.add('vert');
+      } else if (currentWidth > 30) {
+        remplissage.classList.add('orange');
+      } else {
+        remplissage.classList.add('rouge');
+      }
+
+      console.log(`Jauge à : ${currentWidth}%`);
+    }
 
     function emptyGauge() {
-      // Diminue la jauge de 10%
       currentWidth = Math.max(0, currentWidth - 10);
-      remplissage.style.width = currentWidth + '%';
-      console.log(`Jauge vide à : ${currentWidth}%`);
+      updateGauge();
     }
 
     function handleMotion(event) {
@@ -100,8 +135,6 @@
       const accTotal = Math.sqrt(acc.x ** 2 + acc.y ** 2 + acc.z ** 2);
 
       const now = Date.now();
-      console.log(`Accélération totale : ${accTotal}`);
-
       if (accTotal > 20 && now - lastShakeTime > 1000) {
         lastShakeTime = now;
         emptyGauge();
