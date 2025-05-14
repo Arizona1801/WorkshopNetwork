@@ -72,12 +72,27 @@ p {
   margin-bottom: 20px;
 }
 
+.bar-outer {
+  position: absolute;
+  width: 30px;   /* même taille que ton SVG */
+  height: 200px; /* même taille que ton SVG */
+}
+
+.bar {
+  position: absolute;
+  width: 100%;
+  height: 20px;
+  background-color: #ddd;
+  border-radius: 10px;
+  margin: 20px auto;
+}
+
 .bar-container {
   position: relative;
   width: 30px;
   height: 200px;
   background: #555;
-  border-radius: 5px;
+  border-radius: 100px;
   margin: 20px auto;
   overflow: hidden;
   display: flex;
@@ -85,20 +100,49 @@ p {
 }
 
 #progress-bar {
+  position: relative; /* Assurez-vous que la barre est positionnée */
   width: 100%;
   height: 0%;
   background-color: #00aaff;
   transition: height 0.05s;
+  z-index: 2; /* La barre de progression passe au-dessus de l'image */
 }
 
+/* Zone optimale (déjà présente, à adapter si besoin) */
+/* Zone optimale (verte) */
 .optimal-zone {
   position: absolute;
-  bottom: 15%;
-  height: 15%;
+  bottom: 70%; /* optimalMin */
+  height: 15%; /* optimalMax - optimalMin */
   width: 100%;
   background-color: rgba(0, 255, 0, 0.4);
   pointer-events: none;
+  z-index: 2;
 }
+
+/* Zones à 0 point (orange) */
+.zero-zone {
+  position: absolute;
+  width: 100%;
+  background-color: #4C1452;
+  background-image: url('mortel.png');
+  background-size: 10px 10px; /* Largeur et hauteur de l'image en pixels */
+  background-repeat: no-repeat; /* Empêche la répétition de l'image */
+  background-position: center; /* Centre l'image dans la zone */
+  pointer-events: none;
+  z-index: 1;
+}
+
+.zero-zone-top {
+  bottom: 85%; /* optimalMax */
+  height: 10%;  /* 10% de la barre, juste au-dessus de la zone optimale */
+}
+
+.zero-zone-bottom {
+  bottom: 60%; /* optimalMin - 10 */
+  height: 10%;  /* 10% de la barre, juste en dessous de la zone optimale */
+}
+
 
 /* ========== Charge Button ========== */
 #charge-button {

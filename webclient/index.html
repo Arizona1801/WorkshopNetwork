@@ -10,21 +10,23 @@
   <div class="container">
     <header class="header">
       <h1 class="title">Equipe sabotage</h1>
-      <!--<p class="subtitle">Secoue ton téléphone pour siphonner l’essence de la fusée</p><!-->
     </header>
 
     <main class="game-container">
-
-      <div class="bar-container">
-        <div class="optimal-zone"></div>
-        <div id="progress-bar"></div>
+      <div>
+        <!-- <img class="bar-bg" src="bar.svg" alt="barre de progression" /> -->
+        <div class="bar-container">
+          <div class="zero-zone zero-zone-top"></div>
+          <div class="optimal-zone"></div>
+          <div class="zero-zone zero-zone-bottom"></div>
+          <div id="progress-bar"></div>
+        </div>
       </div>
 
       <div class="score">
         Score total : <span id="score">0</span><br>
         Dernier score : <span id="last-score">+0</span>
       </div>
-
 
       <button id="charge-button" aria-label="Charger"></button>
     </main>
@@ -37,63 +39,68 @@
         </div>
         <button class="buttonBonus" disabled>Bonus</button>
       </div>
-
       <p class="subButton">Progression x2</p>
     </footer>
   </div>
 
   <script>
+    // --- Connexion WebSocket ouverte au chargement ---
+    const ws = new WebSocket(`ws://${location.hostname}:8080`);
+
+    // Sélection des éléments HTML
     const progressBar = document.getElementById('progress-bar');
-    const button = document.getElementById('charge-button');
+    const chargeButton = document.getElementById('charge-button');
     const lastScoreDisplay = document.getElementById('last-score');
-    const scoreDisplay = document.getElementById('score'); // <-- AJOUT ICI
+    const scoreDisplay = document.getElementById('score');
     const buttonBonus = document.querySelector('.buttonBonus');
     const bonusProgressFill = document.querySelector('.bonus-progress-fill');
 
+    // Variables du jeu
     let progress = 0;
     let isPressing = false;
     let timer = 0;
     let score = 0;
     let interval = null;
-
-    const maxProgress = 100;
-    const optimalMin = 70;
-    const optimalMax = 85;
+    let lastScore = 0;
     let bonusProgress = 0;
-
     let isBonusActive = false;
     let scoreMultiplier = 1;
-    let scoreSinceLastBonus = 0; // Points gagnés depuis la dernière activation du bonus
-    let lastScore = 0;
+    let scoreSinceLastBonus = 0;
 
-    function updateBar() {
-      if (!isPressing) return;
-      timer += 0.016;
-      const acceleration = 1 + Math.pow(timer, 2.5);
-      progress += acceleration * 1.5;
+    // Constantes pour la barre
+    const MAX_PROGRESS = 100;
+    const OPTIMAL_MIN = 70;
+    const OPTIMAL_MAX = 85;
 
-      if (progress >= maxProgress) {
-        lastScore = -10 * scoreMultiplier;
-        score += lastScore;
-        resetCharge();
+    // Envoi automatique du score via WebSocket
+    function sendLastScore() {
+      if (ws.readyState === WebSocket.OPEN) {
+        ws.send(String(lastScore));
+        console.log("Score envoyé via WebSocket :", lastScore);
+      } else {
+        // Si la connexion n'est pas encore ouverte, attends qu'elle le soit
+        ws.addEventListener('open', () => {
+          ws.send(String(lastScore));
+          console.log("Score envoyé via WebSocket (après ouverture) :", lastScore);
+        }, { once: true });
       }
-      updateUI();
     }
-    
+
+    // Met à jour l'affichage de la barre et du score
     function updateUI() {
       progressBar.style.height = Math.min(progress, 100) + "%";
       lastScoreDisplay.textContent = (lastScore > 0 ? "+" : "") + lastScore;
-      scoreDisplay.textContent = score; // <-- AJOUT ICI
+      scoreDisplay.textContent = score;
 
-      // Recharge la barre bonus uniquement avec les nouveaux points
+      // Mise à jour de la barre bonus
       if (!isBonusActive) {
-        bonusProgress = Math.min(100, (scoreSinceLastBonus / 100) * 100);
+        bonusProgress = Math.min(100, (scoreSinceLastBonus));
       }
       bonusProgressFill.style.width = bonusProgress + "%";
       buttonBonus.disabled = !(bonusProgress >= 100 && !isBonusActive);
     }
 
-
+    // Remet la barre à zéro
     function resetCharge() {
       progress = 0;
       timer = 0;
@@ -102,63 +109,84 @@
       updateUI();
     }
 
+    // Gère la montée de la barre pendant l'appui
+    function updateBar() {
+      if (!isPressing) return;
+      timer += 0.016;
+      const acceleration = 1 + Math.pow(timer, 2.5);
+      progress += acceleration * 1.5;
+
+      if (progress >= MAX_PROGRESS) {
+        lastScore = -10 * scoreMultiplier;
+        score += lastScore;
+        sendLastScore(); // Envoi automatique du score
+        resetCharge();
+      }
+      updateUI();
+    }
+
+    // Calcule le score quand on relâche le bouton
     function handleRelease() {
       if (!isPressing) return;
       isPressing = false;
-      button.classList.remove('pressed');
+      chargeButton.classList.remove('pressed');
 
       let points = 0;
-      if (progress >= optimalMin && progress <= optimalMax) {
-        const bonus = Math.round((progress - optimalMin) * 2);
-        points = 10 + bonus;
+      if (progress > MAX_PROGRESS) {
+        points = -5 * scoreMultiplier;
+      } else if (progress >= OPTIMAL_MIN && progress <= OPTIMAL_MAX) {
+        points = 10 * scoreMultiplier;
+      } else if (
+        (progress >= OPTIMAL_MIN - 10 && progress < OPTIMAL_MIN) ||
+        (progress > OPTIMAL_MAX && progress <= OPTIMAL_MAX + 10)
+      ) {
+        points = 0;
+      } else if (progress >= 0 && progress <= MAX_PROGRESS) {
+        points = 1 * scoreMultiplier;
       } else {
-        points = Math.round(progress * 0.2);
+        points = -5 * scoreMultiplier;
       }
 
-      lastScore = points * scoreMultiplier;
+      lastScore = points;
       score += lastScore;
-
-      // On ajoute les points gagnés à scoreSinceLastBonus UNIQUEMENT si le bonus n'est pas actif
       if (!isBonusActive) {
         scoreSinceLastBonus += lastScore;
       }
-
+      sendLastScore(); // Envoi automatique du score ici aussi
       resetCharge();
     }
 
-    // Empêche le menu contextuel (clic droit ou appui long)
-    button.addEventListener('contextmenu', e => e.preventDefault());
+    // Gestion des événements
+    chargeButton.addEventListener('contextmenu', e => e.preventDefault());
 
-    // Souris
-    button.addEventListener('mousedown', e => {
+    chargeButton.addEventListener('mousedown', e => {
       e.preventDefault();
-      button.classList.add('pressed');
+      chargeButton.classList.add('pressed');
       if (interval) clearInterval(interval);
       isPressing = true;
       interval = setInterval(updateBar, 16);
     });
-    button.addEventListener('mouseup', handleRelease);
-    button.addEventListener('mouseleave', handleRelease);
+    chargeButton.addEventListener('mouseup', handleRelease);
+    chargeButton.addEventListener('mouseleave', handleRelease);
 
-    // Mobile
-    button.addEventListener('touchstart', e => {
+    chargeButton.addEventListener('touchstart', e => {
       e.preventDefault();
-      button.classList.add('pressed');
+      chargeButton.classList.add('pressed');
       if (interval) clearInterval(interval);
       isPressing = true;
       interval = setInterval(updateBar, 16);
     });
-    button.addEventListener('touchend', e => {
+    chargeButton.addEventListener('touchend', e => {
       e.preventDefault();
       handleRelease();
     });
 
-    // Action du bouton bonus
+    // Gestion du bonus
     buttonBonus.addEventListener('click', () => {
       if (bonusProgress >= 100 && !isBonusActive) {
         isBonusActive = true;
         scoreMultiplier = 2;
-        scoreSinceLastBonus = 0; // On repart de zéro pour la recharge
+        scoreSinceLastBonus = 0;
         bonusProgress = 100;
         updateUI();
 
@@ -168,14 +196,12 @@
         function animateBonus() {
           const elapsed = Date.now() - startTime;
           if (elapsed >= duration) {
-            // Fin du bonus
             isBonusActive = false;
             scoreMultiplier = 1;
             bonusProgress = 0;
             updateUI();
             return;
           }
-          // Barre descend de 100% à 0%
           bonusProgress = 100 - (elapsed / duration) * 100;
           bonusProgressFill.style.width = bonusProgress + "%";
           requestAnimationFrame(animateBonus);
@@ -185,7 +211,8 @@
       }
     });
 
-
+    // Initialisation de l'affichage
+    updateUI();
   </script>
 </body>
 </html>
