@@ -1,0 +1,114 @@
+/* CSS Document */
+@import url('https://fonts.googleapis.com/css2?family=Jersey+15&display=swap');
+
+
+:root {
+    --orange: #E75E01;
+    --blueDark: #183356;
+    --blue: #3799FA;
+    --white: #FFFFFF;
+    --green: #71C938;
+    --font-family: "Jersey 15", sans-serif;
+    --font-size: 16px;
+    --line-height: 1.5;
+}
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-family);
+    color: var(--white);
+    text-align: center;
+    font-size: 2rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+p {
+    font-family: var(--font-family);
+    color: var(--white);
+    font-size: var(--font-size);
+    line-height: var(--line-height);
+    text-align: center;
+    text-align: center;
+    font-size: 1.5rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 150%; /* 2.25rem */
+}
+span {
+    font-family: var(--font-family);
+    color: #52637A;
+    text-align: center;
+    font-family: "Jersey 15";
+    font-size: 0.625rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+h1 {
+    font-size: 4rem;
+    margin-bottom: 0;
+    border: 0;
+    
+}
+
+body {
+    background-color: var(--blueDark);
+    padding: 1rem;
+    margin: 0;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.titre {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    gap: 0;
+    padding: 0;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: auto;
+    margin: 0;
+    margin-bottom: -2rem;
+    gap: -2rem;
+    height: 95vh;
+    overflow: hidden;
+    
+}
+.containerbottom {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    width: auto;
+    height: 100%;
+}
+
+button {
+    background-color: var(--blueDark);
+    color: var(--blueDark);
+    stroke: 0;
+    border: 0;
+}
+
+.bouton {
+    width: fill;
+    aspect-ratio: auto;
+}
+
+.bouton:hover {
+    scale: 1.05;
+}
+
+.logo {
+    width: 6rem;
+    height: auto;
+    aspect-ratio: auto;
+}
