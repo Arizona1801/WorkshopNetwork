@@ -1,144 +1,191 @@
-/* CSS Document */
 @import url('https://fonts.googleapis.com/css2?family=Jersey+15&display=swap');
 
-* {
-
-    box-sizing: border-box;
-    border: 1px solid color(red);
-}
-
+/* ========== Variables ========== */
 :root {
-    --orange: #E75E01;
-    --blueDark: #183356;
-    --blue: #3799FA;
-    --white: #FFFFFF;
-    --green: #71C938;
-    --font-family: "Jersey 15", sans-serif;
-    --font-size: 16px;
-    --line-height: 1.5;
+  --orange: #E75E01;
+  --blueDark: #183356;
+  --blue: #3799FA;
+  --white: #FFFFFF;
+  --green: #71C938;
+  --font-family: "Jersey 15", sans-serif;
+  --font-size: 16px;
+  --line-height: 1.5;
 }
-h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-family);
-    color: var(--white);
-    text-align: center;
-    font-size: 2rem;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-}
-p {
-    font-family: var(--font-family);
-    color: var(--white);
-    font-size: var(--font-size);
-    line-height: var(--line-height);
-    text-align: center;
-    text-align: center;
-    font-size: 1.5rem;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 150%; /* 2.25rem */
+
+/* ========== Base ========== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-    background-color: var(--blueDark);
+  background-color: var(--blueDark);
+  font-family: var(--font-family);
+  color: var(--white);
 }
 
+/* ========== Text ========== */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-family);
+  color: var(--white);
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 400;
+}
+
+p {
+  text-align: center;
+  font-size: 1.5rem;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+/* ========== Layout ========== */
 .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    height: 75vh;
-    margin: 24px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 20px;
 }
 
-.header {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-}
-
-.title {
-    color: var(--orange);
-    font-size: 3rem;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-    margin: 0;
+.header .title {
+  color: var(--orange);
+  font-size: 3rem;
+  gap: 20px;
 }
 
 .subtitle {
-    color: var(--white);
-    font-size: 1.75rem;
-    margin: 0;
-    line-height: normal;
+  font-size: 1.75rem;
+  line-height: 100%;
 }
 
-.secouepng {
-    width: 50%;
+/* ========== Game UI ========== */
+.game-container {
+  text-align: center;
 }
+
+.score {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+}
+
+.bar-container {
+  position: relative;
+  width: 30px;
+  height: 200px;
+  background: #555;
+  border-radius: 5px;
+  margin: 20px auto;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end; /* progress-bar monte vers le haut */
+}
+
+#progress-bar {
+  width: 100%;
+  height: 0%;
+  background-color: #00aaff;
+  transition: height 0.05s;
+}
+
+.optimal-zone {
+  position: absolute;
+  bottom: 15%;
+  height: 15%;
+  width: 100%;
+  background-color: rgba(0, 255, 0, 0.4);
+  pointer-events: none;
+}
+
+/* ========== Charge Button ========== */
+#charge-button {
+  width: 120px;
+  height: 120px;
+  background-image: url('bouton-normal.svg');
+  background-size: cover;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+#charge-button.pressed {
+  background-image: url('bouton-press.svg');
+}
+
+button:focus {
+  outline: none;
+}
+
+/* ========== Bonus Button Section ========== */
 .buttonContent {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
-.buttonBorder{
-    position: relative;
-    border-radius: 100;
-}
-
-.buttonBonus {
-    font-family: "Jersey 15";
-    color: white;
-    font-size: 2.35rem;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-    border-radius: 100px;
-    border: 4px solid var(--blueDark);
-    width: 258px;
-    height: 66px;
-    margin: 0;
-    background: linear-gradient(to top, #bbbec2 0%, #bbbec2 100%);
-    transition: background 0.3s ease;
-    cursor: not-allowed; /* Désactivé par défaut */
-}
-
-.buttonBonus:disabled {
-    cursor: not-allowed;
-    opacity: 0.7;
+.buttonBorder {
+  position: relative;
+  border-radius: 100px;
+  display: inline-block;
 }
 
 .borderSvg {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 3;
 }
 
-.bottomText {
-    color: var(--white);
-    font-size: 6rem;
-    margin: 0;
-    line-height: 0.5;
+.buttonBonus {
+  font-family: var(--font-family);
+  color: var(--white);
+  font-size: 2.35rem;
+  border-radius: 100px;
+  border: 4px solid var(--blueDark);
+  width: 258px;
+  height: 66px;
+  background: transparent;
+  transition: background 0.3s ease;
+  cursor: not-allowed;
+  position: relative;
+  z-index: 4;
+}
+
+.buttonBonus:disabled {
+  opacity: 0.7;
 }
 
 .subButton {
-    color: #707B8A;
-    text-align: center;
-    font-family: "Jersey 15";
-    font-size: 1.25rem;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-    margin: 12px;
+  color: #707B8A;
+  font-size: 1.25rem;
+  margin: 12px;
 }
 
+/* ========== Bonus Progress Bar ========== */
+.bonus-progress-bar {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  background: #bbbec2;
+  border-radius: 999px;
+  overflow: hidden;
+  z-index: 2;
+  pointer-events: none;
+}
 
-
+.bonus-progress-fill {
+  height: 100%;
+  width: 0%;
+  background: var(--green, #4caf50);
+  transition: width 0.2s;
+}
