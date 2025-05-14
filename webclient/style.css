@@ -72,24 +72,23 @@ p {
   margin-bottom: 20px;
 }
 
-.bar-outer {
-  position: absolute;
-  width: 30px;   /* même taille que ton SVG */
-  height: 200px; /* même taille que ton SVG */
+.bar-border {
+  position: relative;
+
 }
 
-.bar {
+.bar-bg {
   position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
-  height: 20px;
-  background-color: #ddd;
-  border-radius: 10px;
-  margin: 20px auto;
+  height: 100%;
+  z-index: 1;
 }
 
 .bar-container {
   position: relative;
-  width: 30px;
+  width: 44px;
   height: 200px;
   background: #555;
   border-radius: 100px;
@@ -97,13 +96,15 @@ p {
   overflow: hidden;
   display: flex;
   align-items: flex-end; /* progress-bar monte vers le haut */
+  z-index: -1;
+
 }
 
 #progress-bar {
   position: relative; /* Assurez-vous que la barre est positionnée */
   width: 100%;
   height: 0%;
-  background-color: #00aaff;
+  background-color: var(--orange, #4caf50);
   transition: height 0.05s;
   z-index: 2; /* La barre de progression passe au-dessus de l'image */
 }
