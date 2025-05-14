@@ -87,12 +87,18 @@
         });
 
         ws.addEventListener("message", async (ev) => {
-          const [player, action, ...values] = (await ev.data.text()).split(",");
 
-          console.log("-----");
-          console.log(player);
-          console.log(action);
-          console.log(values);
+
+          const [team, score] = (await ev.data.text()).split(",");
+
+
+          if(team == "kattys"){
+            console.log(team+" : + " + score);
+
+          }else{
+            //jauge -= score;
+            console.log(team+" : - " + score);
+          }
         });
       }
     </script>

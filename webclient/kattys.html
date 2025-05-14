@@ -75,7 +75,7 @@
     // Envoi automatique du score via WebSocket
     function sendLastScore() {
       if (ws.readyState === WebSocket.OPEN) {
-        ws.send(String(lastScore));
+        ws.send(String("kattys,"+lastScore));
         console.log("Score envoyé via WebSocket :", lastScore);
       } else {
         // Si la connexion n'est pas encore ouverte, attends qu'elle le soit
