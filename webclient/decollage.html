@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Équipe Sabotage</title>
+  <title>Équipe décollage</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="container">
     <header class="header">
-      <h1 class="title">Equipe sabotage</h1>
+      <h1 class="decollage">Equipe décollage</h1>
     </header>
 
     <main class="game-container">
@@ -75,7 +75,7 @@
     // Envoi automatique du score via WebSocket
     function sendLastScore() {
       if (ws.readyState === WebSocket.OPEN) {
-        ws.send(String("saboteur,"+lastScore));
+        ws.send(String("Decollage,"+lastScore));
         console.log("Score envoyé via WebSocket :", lastScore);
       } else {
         // Si la connexion n'est pas encore ouverte, attends qu'elle le soit

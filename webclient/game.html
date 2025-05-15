@@ -1,106 +1,141 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <style>
-      body {
-        font-family: system-ui, sans-serif !important;
-        font-weight: normal;
-      }
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Scores en direct</title>
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      background: #f4f4f4;
+      color: #222;
+      margin: 2em;
+    }
+    .score-box {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px #0001;
+      padding: 1em 2em;
+      margin-bottom: 1em;
+      display: inline-block;
+      min-width: 180px;
+      text-align: center;
+    }
+    .decollage { color: #27ae60; }
+    .sabotage { color: #c0392b; }
+    .general   { color: #2980b9; font-weight: bold; }
+    .progress-container {
+      width: 400px;
+      height: 40px;
+      background: #eee;
+      border-radius: 20px;
+      margin: 2em auto 1em auto;
+      box-shadow: 0 2px 8px #0001;
+      overflow: hidden;
+      position: relative;
+    }
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, #c0392b 0%, #27ae60 100%);
+      width: 50%;
+      transition: width 0.3s;
+      border-radius: 20px 0 0 20px;
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+    .progress-label {
+      position: absolute;
+      width: 100%;
+      text-align: center;
+      line-height: 40px;
+      font-weight: bold;
+      color: #222;
+      z-index: 2;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="score-box decollage">
+    Score Décollage : <span id="scoreDecollage">0</span>
+  </div>
+  <div class="score-box sabotage">
+    Score Sabotage : <span id="scoreSabotage">0</span>
+  </div>
+  <div class="progress-container">
+    <div class="progress-bar" id="progressBar"></div>
+    <div class="progress-label" id="progressLabel">50%</div>
+  </div>
+  <div class="score-box general">
+    Score Général : <span id="scoreGeneral">0</span>
+  </div>
 
-      /* the styling of the dialog's veil */
-      ::backdrop {
-        background-color: black;
-        opacity: 0.5;
-      }
-    </style>
-  </head>
-  <dialog>
-    <h2>What is your name?</h2>
-    <input id="username" type="text" placeholder="username" />
-    <button id="login">Connect</button>
-  </dialog>
+  <script>
+    let scoreDecollage = 0;
+    let scoreSabotage = 0;
 
-  <h2 id="usernameDisplay"></h2>
+    const decollageEl = document.getElementById("scoreDecollage");
+    const sabotageEl = document.getElementById("scoreSabotage");
+    const generalEl = document.getElementById("scoreGeneral");
+    const progressBar = document.getElementById("progressBar");
+    const progressLabel = document.getElementById("progressLabel");
 
-  <button id="left">left</button>
-  <button id="right">left</button>
-  <button id="jump">jump</button>
-  <button id="fire">fire</button>
+    // Paramètres pour la barre
+    const BAR_MIN = 0;
+    const BAR_MAX = 100;
+    const BAR_START = 50; // point de départ (milieu)
 
-  <body>
-    <script>
-      const modal = document.querySelector("dialog");
-      const usernameEl = document.querySelector("#username");
-      const loginBtn = document.querySelector("#login");
-      const leftBtn = document.querySelector("#left");
-      const rightBtn = document.querySelector("#right");
-      const jumpBtn = document.querySelector("#jump");
-      const fireBtn = document.querySelector("#fire");
+    function getBarPercent() {
+      // On suppose que la différence max possible est +/-50
+      // (donc score général de -50 à +50)
+      // Tu peux ajuster cette valeur selon ton jeu !
+      const DIFF_MAX = 50;
 
-      document.addEventListener("DOMContentLoaded", () => {
-        modal.showModal();
+      let general = scoreDecollage - scoreSabotage;
+      // Clamp la valeur entre -DIFF_MAX et +DIFF_MAX
+      general = Math.max(-DIFF_MAX, Math.min(DIFF_MAX, general));
+      // Transforme en pourcentage (0% = sabotage max, 100% = décollage max, 50% = égalité)
+      return Math.round(50 + (general / (2 * DIFF_MAX)) * 100);
+    }
+
+    function updateDisplay() {
+      decollageEl.textContent = scoreDecollage;
+      sabotageEl.textContent = scoreSabotage;
+      let general = scoreDecollage - scoreSabotage;
+      generalEl.textContent = general;
+
+      // Barre de progression
+      const percent = getBarPercent();
+      progressBar.style.width = percent + "%";
+      progressLabel.textContent = percent + "%";
+    }
+
+    function connect() {
+      const ws = new WebSocket(`ws://${location.hostname}:8080`);
+
+      ws.addEventListener("message", async (ev) => {
+        const [team, value] = (await ev.data.text()).split(",");
+        const delta = parseInt(value, 10) || 0;
+
+        if (team === "Decollage") {
+          scoreDecollage += delta;
+          console.log(team + " : +" + delta);
+        } else if (team === "Sabotage") {
+          scoreSabotage += Math.abs(delta);
+          console.log(team + " : " + (delta >= 0 ? "+" : "") + delta);
+        }
+
+        updateDisplay();
       });
 
-      loginBtn.addEventListener("pointerup", () => {
-        connect();
-        modal.close();
-        document.querySelector("#usernameDisplay").innerText = usernameEl.value;
+      ws.addEventListener("close", () => {
+        setTimeout(connect, 1000);
       });
+    }
 
-      function connect() {
-        // you might need to change the address
-        const ws = new WebSocket(`ws://${location.hostname}:8080`);
-
-        ws.addEventListener("open", (ev) => {
-          console.log("connected");
-
-          // pointerdown = touchdown + mousedown
-          jumpBtn.addEventListener("pointerdown", (ev) => {
-            ws.send(usernameEl.value + ",jump");
-          });
-
-          fireBtn.addEventListener("pointerup", (ev) => {
-            ws.send(usernameEl.value + ",fire");
-          });
-
-          leftBtn.addEventListener("pointerdown", (ev) => {
-            ws.send(usernameEl.value + ",moveX,-1.0");
-          });
-          leftBtn.addEventListener("pointerup", (ev) => {
-            ws.send(usernameEl.value + ",moveX,0.0");
-          });
-
-          rightBtn.addEventListener("pointerdown", (ev) => {
-            ws.send(usernameEl.value + ",moveX,1.0");
-          });
-          rightBtn.addEventListener("pointerup", (ev) => {
-            ws.send(usernameEl.value + ",moveX,0.0");
-          });
-        });
-
-        ws.addEventListener("close", (ev) => {
-          console.warn("connection closed");
-          connect(); // try to reconnect
-        });
-
-        ws.addEventListener("message", async (ev) => {
-
-
-          const [team, score] = (await ev.data.text()).split(",");
-
-
-          if(team == "kattys"){
-            console.log(team+" : + " + score);
-
-          }else{
-            //jauge -= score;
-            console.log(team+" : - " + score);
-          }
-        });
-      }
-    </script>
-  </body>
+    updateDisplay();
+    connect();
+  </script>
+</body>
 </html>

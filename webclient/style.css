@@ -57,6 +57,12 @@ p {
   gap: 20px;
 }
 
+.decollage {
+  color: var(--green);
+  font-size: 3rem;
+  gap: 20px;
+}
+
 .subtitle {
   font-size: 1.75rem;
   line-height: 100%;
