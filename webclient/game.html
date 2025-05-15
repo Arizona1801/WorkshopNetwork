@@ -39,18 +39,25 @@
         </div>    
         <img src="" alt="qrCodeSabotage">
     </div>
-  <div class="fuse-container">
-    
-    <img class="progress-frame" src="web-client-png/fuse.png" alt="Contour de la jauge" />
 
-    <div class="progress-container">
-      <div class="progress-bar-container">
-        <div class="progress-bar" id="progressBar"></div>
-        <div class="progress-label" id="progressLabel">50%</div>
+  <div>
+
+    <img class="katy-smile" src="web-client-png/katyHappy.png" alt="Katy" />
+    <div class="fuse-container">
+
+      
+      <img class="progress-frame" src="web-client-png/fuse.png" alt="Contour de la jauge" />
+
+      <div class="progress-container">
+        <div class="progress-bar-container">
+          <div class="progress-bar" id="progressBar"></div>
+          <div class="progress-label" id="progressLabel">50%</div>
+        </div>
       </div>
     </div>
-  </div>
 
+  </div>
+  
   <div id="containerbottom">
         <div id="decollage">
             <div id="connexionDecollage">
@@ -125,13 +132,21 @@
       progressBar.style.height = percent + "%";
       progressLabel.textContent = percent + "%";
 
+      // Changer l'image de Katy en fonction du pourcentage
+      const katyImage = document.querySelector('.katy-smile');
+      if (percent < 50) {
+        katyImage.src = "web-client-png/katyHangry.png"; // Remplacez par le chemin de l'image "triste"
+      } else {
+        katyImage.src = "web-client-png/katyHappy.png"; // Remplacez par le chemin de l'image "heureuse"
+      }
+
       // Vérification pour 100%
       if (percent >= 100) {
         window.location.href = "http://10.10.16.179/victoireDecollage.html"; // Remplacez par l’URL de votre nouvelle page
-      }else if (percent <= 0) {
+      } else if (percent <= 0) {
         window.location.href = "http://10.10.16.179/victoireSabotage.html";
+      }
     }
-  }
 
     function connect() {
       const ws = new WebSocket(`ws://${location.hostname}:8080`);

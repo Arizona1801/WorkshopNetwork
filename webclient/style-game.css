@@ -46,8 +46,6 @@ body {
 }
 
 
-
-
 .decollage {
   color: #27ae60;
 }
@@ -66,14 +64,13 @@ body {
     justify-content: center; /* Center horizontally */
     align-items: center; /* Center vertically */
     position: fixed; /* Use fixed positioning */
-    top: 65%; /* Vertically center */
+    top: 50%; /* Vertically center */
     left: 50%; /* Horizontally center */
     transform: translate(-50%, -50%); /* Adjust for the element's size */
     width: auto;
     aspect-ratio: auto;
     margin: 0;  
     padding: 0; /* Enlève le padding */
-    top: 50%; /* Vertically center */
 }
 
 .progress-container {
@@ -313,5 +310,14 @@ body {
     right: -2rem;
     z-index: 10; 
     width: 22rem;
+    height: auto;
+}
+
+.katy-smile {
+    position: absolute;
+    bottom: 70%;
+    left: 55%;
+    z-index: 10; 
+    width: 10rem;
     height: auto;
 }
