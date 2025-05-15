@@ -6,10 +6,13 @@
     <title>CosmicKaty</title>
     <link rel="stylesheet" href="style.css">
     <script
-  src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs"
-  type="module"
-></script>
-
+        src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.3.0/dist/dotlottie-wc.js"
+        type="module">
+    </script>
+    <script
+        src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.3.0/dist/dotlottie-wc.js"
+        type="module">
+    </script>
 </head>
 <body>
 <div id="container">
@@ -34,23 +37,27 @@
     <div id="containerbottom">
         <div id="decollage">
             <div id="connexionDecollage">
-                <img class="icon" src="image/iconDecollage.png" alt="icon">
+                <img class="icon" src="image/icon.svg" alt="icon">
                 <h3 class="count">11</h3>
             </div>
+            <dotlottie-wc id="animationDecollage"
+                src="https://lottie.host/cd33be5d-4994-4922-aa9f-7c3b693143c1/HZCZvtgXRV.lottie"
+                autoplay
+                speed="1"
+                loop>
+            </dotlottie-wc>
             <img class="imageDecollage" src="image/bulleDecollage copie.png" alt="">
         </div>
         <div id="sabotage">
             <div id="connexionSabotage">
-                <img class="icon" src="image/iconSabotage.png" alt="icon">
+                <img class="icon" src="image/icon.svg" alt="icon">
                 <h3 class="count">11</h3>
             </div>
-                <dotlottie-player
-                    src="https://lottie.host/2642496e-7907-4d13-b59f-bf53d8ecef03/3HrNgcKtc6.lottie"
-                    background="transparent"
-                    speed="1.75"
-                    style="width: 400px; height: 300px"
-                    loop
-                    autoplay>
+                <dotlottie-wc id="animationSabotage"
+                    src="https://lottie.host/049b8547-5945-40cf-8a13-36bfd07f6dc7/halWI7lkGu.lottie"
+                    autoplay
+                    loop>
+                    </dotlottie-wc>
                 </dotlottie-player>
             <img class="imageSabotage" src="image/bulleSabotage copie.png" alt="">
         </div>

@@ -33,7 +33,6 @@ h1 {
 
 body {
     background-image: url("image/paysage-bis.png");
-    background-repeat: no-repeat;
     background-clip: screen;
     background-size: cover;
     background-attachment: bottom;
@@ -114,7 +113,7 @@ body {
     display: inline-flex;
     justify-content: start;
     padding-left: 4rem;
-    align-items: center;
+    align-items: flex-end;
     background-color: var(--white);
     color: black;
     gap: 1rem;
@@ -133,7 +132,7 @@ body {
     justify-content: start;
     flex-direction: row-reverse;
     padding-left: 0rem;
-    align-items: center;
+    align-items: flex-end;
     background-color: var(--white);
     color: black;
     gap: 1rem;
@@ -170,6 +169,9 @@ body {
     font-family: ver(--font-family);
     font-weight: 400;
     font-size: 90px;
+    line-height: 0;
+    margin: 0;
+    padding-bottom: 1.5rem;
 
 }
 
@@ -213,6 +215,24 @@ body {
 
 .icon{
     size: 100%;
-    width: 100%;
-    height: 100%;
+    width: 3rem;
+    height: auto;
+}
+
+#animationDecollage {
+    position: absolute;
+    bottom: 5rem;
+    left: -2rem;
+    z-index: 10; 
+    width: 24rem;
+    height: auto;
+}
+
+#animationSabotage {
+    position: absolute;
+    bottom: 7rem;
+    right: -2rem;
+    z-index: 10; 
+    width: 28rem;
+    height: auto;
 }
