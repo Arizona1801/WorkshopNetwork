@@ -1,0 +1,261 @@
+[33mcommit fa47557831002b3266443e7d458143cd8b5600bc[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: khlooe <c.moalic@lecolededesign.com>
+Date:   Thu May 15 12:41:10 2025 +0200
+
+    Refactor code structure for improved readability and maintainability
+
+[33mcommit 8bb7499b35299b8287bd5c8edfef80c2ecb2e800[m
+Author: khlooe <c.moalic@lecolededesign.com>
+Date:   Thu May 15 10:41:24 2025 +0200
+
+    Refactor game HTML files and implement scoring system with WebSocket integration; remove obsolete files for sabotage and kattys teams.
+
+[33mcommit b523d5c786b570780aebe457de295f95b1fcd625[m
+Merge: 07a3897 8e9aee1
+Author: khlooe <c.moalic@lecolededesign.com>
+Date:   Wed May 14 17:02:52 2025 +0200
+
+    Merge branch 'main' of https://github.com/Arizona1801/WorkshopNetwork
+
+[33mcommit 07a3897e0878e695382bb54cfdd4c71ec3991a0e[m
+Author: khlooe <c.moalic@lecolededesign.com>
+Date:   Wed May 14 17:02:48 2025 +0200
+
+    Add game and team HTML files with WebSocket integration and scoring system
+
+[33mcommit 8e9aee106de5abd59a7e48ed40940d15bae3617b[m
+Author: Brayan <crasebrayan@gmail.com>
+Date:   Wed May 14 16:32:49 2025 +0200
+
+    image
+
+[33mcommit 9c0a4220894bb8bd02386aa099feac59b1ea6a4e[m
+Author: Brayan <crasebrayan@gmail.com>
+Date:   Wed May 14 16:10:31 2025 +0200
+
+    dossier
+
+[33mcommit a785ff135dfa607c7f71ed2deff802068136249c[m
+Author: Brayan <crasebrayan@gmail.com>
+Date:   Wed May 14 15:19:52 2025 +0200
+
+    image et video webgame
+
+[33mcommit 9a4cf3d0091f46eee23b1b34b007fd769dc1f23a[m
+Author: khlooe <c.moalic@lecolededesign.com>
+Date:   Wed May 14 15:16:54 2025 +0200
+
+    Add folder client page
+
+[33mcommit 7c17cda31e8dc417a15072909fcd4c59aeed6656[m
+Author: Brayan <crasebrayan@gmail.com>
+Date:   Wed May 14 15:05:24 2025 +0200
+
+    dossier game
+
+[33mcommit 8c87917dbc57319a4cc01bbfcd37908a21645d05[m
+Author: khlooe <c.moalic@lecolededesign.com>
+Date:   Wed May 14 13:58:04 2025 +0200
+
+    Refactor progress bar structure and styles for improved layout and responsiveness
+
+[33mcommit 8714a1531fa57490b4b3c866476a77dda2403646[m
+Author: khlooe <c.moalic@lecolededesign.com>
+Date:   Wed May 14 13:11:12 2025 +0200
+
+    Implement code changes to enhance functionality and improve performance
+
+[33mcommit de20d82ddf9dae68f7953cbaa4b19b8250fcde3f[m
+Author: khlooe <c.moalic@lecolededesign.com>
+Date:   Wed May 14 11:43:38 2025 +0200
+
+    Add SVG files for normal and pressed button states
+    
+    - Created bouton-normal.svg to represent the normal state of the button with various color fills.
+    - Created bouton-press.svg to represent the pressed state of the button with updated color fills.
+
+[33mcommit a412167f96a3e0ad1b706030296e631409d13796[m
+Author: khlooe <c.moalic@lecolededesign.com>
+Date:   Tue May 13 16:25:21 2025 +0200
+
+    Refactor device motion permission handling to request permission on page load
+
+[33mcommit 65a6e09b8de7e3fde9a3e29ccb789968205663b9[m
+Author: khlooe <c.moalic@lecolededesign.com>
+Date:   Tue May 13 15:07:31 2025 +0200
+
+    Add initial CSS styles for web client interface
+    
+    - Introduced a new stylesheet to define global styles and layout.
+    - Set up CSS variables for colors, font family, and sizes for easier maintenance.
+    - Styled headings, paragraphs, and buttons for a cohesive look.
+    - Implemented a flexbox layout for the main container and button alignment.
+    - Added hover and disabled states for buttons to enhance user experience.
+
+[33mcommit 59b93f5e06574666eac9b220c2ad051e1e4da68b[m
+Author: khlooe <c.moalic@lecolededesign.com>
+Date:   Tue May 13 14:54:26 2025 +0200
+
+    Add viewport meta tag for responsive design in index.html
+
+[33mcommit 7ec90db7838661e5342ae08378b259abce90e3d9[m
+Author: khlooe <c.moalic@lecolededesign.com>
+Date:   Tue May 13 14:51:33 2025 +0200
+
+    Remove device motion permission handling and related button from index.html
+
+[33mcommit d8c6841da40dd09ce4ee7b704cf1dbb1b0a74dd3[m
+Author: khlooe <c.moalic@lecolededesign.com>
+Date:   Tue May 13 14:48:56 2025 +0200
+
+    Add device motion permission handling and update button functionality
+
+[33mcommit ce2f928cd1f3ab469e42179a150f4be66b57d707[m
+Author: khlooe <c.moalic@lecolededesign.com>
+Date:   Tue May 13 14:41:24 2025 +0200
+
+    Update title in index.html to correct translation
+
+[33mcommit 9e7a190e5213cbbbaf25a9650ccf364cd4c844b8[m
+Author: Chloé Moalic <121683133+khlooe@users.noreply.github.com>
+Date:   Tue May 13 14:24:06 2025 +0200
+
+    Update style.css
+
+[33mcommit 1ae86e47765af24521185cd110c426bede2349a7[m
+Author: Chloé Moalic <121683133+khlooe@users.noreply.github.com>
+Date:   Tue May 13 14:23:25 2025 +0200
+
+    Update index.html
+
+[33mcommit fe652c532091b230b653fa7779dcb5b8dc503542[m
+Author: Chloé Moalic <121683133+khlooe@users.noreply.github.com>
+Date:   Tue May 13 14:17:36 2025 +0200
+
+    Update style.css
+
+[33mcommit 030e402162f88577c713c91d73a46a04926d58d2[m
+Author: Chloé Moalic <121683133+khlooe@users.noreply.github.com>
+Date:   Tue May 13 14:17:16 2025 +0200
+
+    Update style.css
+
+[33mcommit e8d85dde9090377b53c39c86812a6936325068e5[m
+Author: Chloé Moalic <121683133+khlooe@users.noreply.github.com>
+Date:   Tue May 13 14:15:06 2025 +0200
+
+    Update index.html
+
+[33mcommit b977e3e66a08ea399d40bce238ac45fe902b1965[m
+Author: Chloé Moalic <121683133+khlooe@users.noreply.github.com>
+Date:   Tue May 13 14:14:53 2025 +0200
+
+    Update style.css
+
+[33mcommit e7bf076495217002853062736c30acc20cfe213d[m
+Author: Chloé Moalic <121683133+khlooe@users.noreply.github.com>
+Date:   Tue May 13 14:05:18 2025 +0200
+
+    Update style.css
+
+[33mcommit 9597bb414b18ea71f4ee93ef23238e039150d821[m
+Author: Chloé Moalic <121683133+khlooe@users.noreply.github.com>
+Date:   Tue May 13 14:03:26 2025 +0200
+
+    Add files via upload
+
+[33mcommit f2619b3190cd9257d1de6bc0524930619fae6066[m
+Author: Chloé Moalic <121683133+khlooe@users.noreply.github.com>
+Date:   Tue May 13 14:01:53 2025 +0200
+
+    Add files via upload
+
+[33mcommit c7a14c0e3f62e46d2013de9ea461e67aeb29d4b0[m
+Author: Chloé Moalic <121683133+khlooe@users.noreply.github.com>
+Date:   Tue May 13 14:01:06 2025 +0200
+
+    Update index Button Progression.html
+
+[33mcommit 99848dff0587830cb0c03362c4cec8b677fb503b[m
+Author: Chloé Moalic <121683133+khlooe@users.noreply.github.com>
+Date:   Tue May 13 11:58:16 2025 +0200
+
+    Update index.html
+
+[33mcommit dfebcdecb1463c16820364bb84ecdedcb90832ee[m
+Author: Chloé Moalic <121683133+khlooe@users.noreply.github.com>
+Date:   Tue May 13 11:22:07 2025 +0200
+
+    Update index.html
+
+[33mcommit 0e968260f81a82f5f2fdf9c2c1074c967fc52ecf[m
+Author: Chloé Moalic <121683133+khlooe@users.noreply.github.com>
+Date:   Tue May 13 11:06:53 2025 +0200
+
+    Add files via upload
+
+[33mcommit 8e99b3bdda61908c99fd9d2f9b60c32420f7cdee[m
+Author: Chloé Moalic <121683133+khlooe@users.noreply.github.com>
+Date:   Tue May 13 11:05:30 2025 +0200
+
+    Update index.html
+
+[33mcommit 36a9655df5b47d5fbb0be0d45e388f5e6222ede0[m
+Author: Chloé Moalic <121683133+khlooe@users.noreply.github.com>
+Date:   Mon May 12 15:03:59 2025 +0200
+
+    Update index.html
+
+[33mcommit 65595165cfc84ba6a30455c3b8dd614cd265abb4[m
+Author: Chloé Moalic <121683133+khlooe@users.noreply.github.com>
+Date:   Mon May 12 14:58:27 2025 +0200
+
+    Add files via upload
+
+[33mcommit fba9b2e6dae35b2af510fb28410a0b87f0759c99[m
+Author: Chloé Moalic <121683133+khlooe@users.noreply.github.com>
+Date:   Mon May 12 14:57:15 2025 +0200
+
+    Update index.html
+
+[33mcommit 553193507ba711f0cd4308eb02342ae427f42343[m
+Author: Chloé Moalic <121683133+khlooe@users.noreply.github.com>
+Date:   Mon May 12 13:02:19 2025 +0200
+
+    Update index.html
+
+[33mcommit e9f01dab91f094e8a3dd6ac13811de09d9206253[m
+Author: Chloé Moalic <121683133+khlooe@users.noreply.github.com>
+Date:   Mon May 12 12:58:47 2025 +0200
+
+    Update index.html
+
+[33mcommit 352934404938f6a68f5fdd903e19f2c6d5d2d55c[m
+Author: Chloé Moalic <121683133+khlooe@users.noreply.github.com>
+Date:   Mon May 12 12:54:59 2025 +0200
+
+    Update index.html
+
+[33mcommit d722c103910a471ce1c8e07f56048a59bc0e853a[m
+Author: Chloé Moalic <121683133+khlooe@users.noreply.github.com>
+Date:   Mon May 12 12:53:26 2025 +0200
+
+    Update index.html
+
+[33mcommit 68cb3e0d56a25fa98225c91e5466e5aa0afaa2c3[m
+Author: Chloé Moalic <121683133+khlooe@users.noreply.github.com>
+Date:   Mon May 12 12:18:45 2025 +0200
+
+    Update index.html
+
+[33mcommit de92382133ca975125e86abed4b0c943ffcb2f70[m
+Author: Chloé Moalic <121683133+khlooe@users.noreply.github.com>
+Date:   Mon May 12 12:15:35 2025 +0200
+
+    Update index.html
+
+[33mcommit edbb35470bfe70b7c162dad7064526856584e516[m
+Author: Chloé Moalic <121683133+khlooe@users.noreply.github.com>
+Date:   Mon May 12 12:01:38 2025 +0200
+
+    Add files via upload

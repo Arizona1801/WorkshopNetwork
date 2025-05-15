@@ -1,0 +1,317 @@
+@import url('https://fonts.googleapis.com/css2?family=Jersey+15&display=swap');
+
+
+.hidden {
+  display: none;
+}
+
+:root {
+    --orange: #E75E01;
+    --blueDark: #183356;
+    --blue: #1d4166;
+    --white: #FFFFFF;
+    --green: #71C938;
+    --font-family: "Jersey 15", sans-serif;
+    --font-size: 16px;
+    --line-height: 1.5;
+}
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-family);
+    color: var(--white);
+    border: 0;
+}
+p {
+    font-family: var(--font-family);
+    color: var(--secondary-color);
+    font-size: var(--font-size);
+    line-height: var(--line-height);
+}
+
+h1 {
+    font-size: 4rem;
+    margin-bottom: 3rem;
+    border: 0;
+}
+
+body {
+    background-image: url("web-client-png/paysage-bis.png");
+    background-size: cover;
+    background-attachment: bottom;
+    background-position: bottom;
+    height: 100vh;
+    overflow: hidden;
+    width: 100%;
+    z-index: -1;
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+}
+
+
+
+
+.decollage {
+  color: #27ae60;
+}
+
+.sabotage {
+  color: #c0392b;
+}
+
+.general {
+  color: #2980b9;
+  font-weight: bold;
+}
+
+.fuse-container {
+    display: flex; /* Use flexbox to center content */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    position: fixed; /* Use fixed positioning */
+    top: 65%; /* Vertically center */
+    left: 50%; /* Horizontally center */
+    transform: translate(-50%, -50%); /* Adjust for the element's size */
+    width: auto;
+    aspect-ratio: auto;
+    margin: 0;  
+    padding: 0; /* Enlève le padding */
+    top: 50%; /* Vertically center */
+}
+
+.progress-container {
+  width: 40px; /* Largeur de la jauge */
+  height: 350px; /* Hauteur de la jauge */
+  background: #eee;
+  border-radius: 20px;
+  display: flex;
+  align-items: flex-end; /* Aligne la barre en bas */
+  justify-content: center; /* Centre la barre horizontalement */
+  margin: 0; /* Enlève les marges */
+  padding: 0; /* Enlève le padding */
+  
+
+}
+
+.progress-bar-container {
+  width: 100%; /* Largeur de la jauge */
+  height: 100%; /* Hauteur de la jauge */
+  background: #eee;
+  border-radius: 20px;
+  position: relative; /* Nécessaire pour positionner les enfants en absolute */
+  display: flex;
+  align-items: flex-end; /* Aligne la barre en bas */
+  padding: 0; /* Enlève le padding */
+  overflow: hidden;
+  
+}
+
+.progress-bar {
+  display: flex;
+  height: 100%; /* La barre occupe toute la largeur */
+  width: 100%;
+  background: linear-gradient(to top, #c0392b 0%, #27ae60 100%); /* Dégradé vertical */
+  transition: height 0.3s; /* Transition fluide pour les changements de hauteur */
+  position: absolute;
+  align-items: flex-end; /* Aligne la barre en bas */
+  bottom: 0; /* La barre commence en bas */
+  z-index: 1; /* Place la barre sous l'image */
+  margin: 0; /* Enlève les marges */
+  padding: 0; /* Enlève le padding */
+}
+
+.progress-label {
+  font-family: var(--font-family);
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  bottom: 54%; /* Place le texte au milieu de la barre */
+  transform: translateY(50%); /* Ajuste la position verticale */
+  font-weight: bold;
+  color: #fff; /* Couleur blanche pour contraster avec la barre */
+  z-index: 2; /* Place le texte au-dessus de la barre */
+  pointer-events: none; /* Empêche les interactions avec le texte */
+}
+
+.progress-frame {
+  position: fixed;
+  width: auto; /* Adapte la largeur de l'image au conteneur */
+  height: 170%; /* Adapte la hauteur de l'image au conteneur */
+  z-index: 3; /* Place l'image au-dessus de la barre et du texte */
+  pointer-events: none; /* Empêche les interactions avec l'image */
+}
+
+#progressBar {
+  width: 100%; /* Adapte la largeur de l'image au conteneur */
+  height: 5%; /* Conserve le ratio de l'image */
+  object-fit: cover; /* Couvre tout le conteneur */
+  pointer-events: none; /* Empêche les interactions avec l'image */
+}
+
+
+/* Botton styles */
+
+.rowTop
+{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 10;
+    position: fixed;
+    width: 100vW;
+    padding-right: 2rem;
+    padding-left: 2rem;
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+
+}
+
+.colTop
+{
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+    gap: 2rem;
+    z-index: 10;
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    width: 100vw; /* Takes the entire width */
+    padding-top: 1rem;
+}
+
+#decollage, #sabotage {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center; /* Center items horizontally */
+    width: 50%; /* Each takes 50% of the width */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+}
+#decollage{
+    margin-left: -3rem;
+}
+
+#connexionDecollage {
+    display: inline-flex;
+    justify-content: start;
+    padding-left: 4rem;
+    align-items: flex-end;
+    background-color: var(--white);
+    color: black;
+    gap: 1rem;
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    z-index: 2;
+    height: auto;
+    box-sizing: border-box;
+}
+
+#connexionSabotage {
+    display: flex;
+    justify-content: start;
+    flex-direction: row-reverse;
+    padding-left: 0rem;
+    align-items: flex-end;
+    background-color: var(--white);
+    color: black;
+    gap: 1rem;
+    position: absolute;
+    bottom: 0px;
+    right: 20px;
+    z-index: 2;
+    width: auto;
+    padding-right: 4.5rem;
+    height: auto;
+    padding-bottom: 1.5rem;
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+
+
+}
+
+#container {
+    position: relative;
+    display: flex;
+    flex-direction: column; /* Changed to column */
+    justify-content: space-between; /* Distributes vertically */
+    align-items: stretch; /* Stretch items to fill width */
+    width: 100vw; /* Takes the entire width */
+    height: 100%; /* Takes the entire viewport height */
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+    padding: 0;
+    margin: 0;
+}
+
+.count{
+    color: black;
+    font-family: ver(--font-family);
+    font-weight: 400;
+    font-size: 3rem;
+    line-height: 0;
+    margin: 0;
+    padding-bottom: 1rem;
+}
+
+#containerbottom {
+    display: flex;
+    position: fixed;
+    flex-direction: row; /* Distributes decollage and sabotage in a row */
+    justify-content: space-between; /* Distributes horizontally */
+    align-items: stretch; /* Stretch items to fill height */
+    width: 100%; /* Takes the entire width */
+    height: 100%; /* Adjust height automatically */  
+}
+
+.logo {
+  width: 12rem; /* Adjust the width as needed */
+  aspect-ratio: auto;
+}
+
+
+.imageDecollage {
+    width: 300px;;
+    height: auto;
+    aspect-ratio: auto;
+    position: absolute;
+    bottom: 0px;
+    left: 10px;
+    z-index: 1; 
+    margin-left: -1rem;
+}
+
+.imageSabotage {
+    width: 300px;;
+    height: auto;
+    aspect-ratio: auto;
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+    z-index: 1;
+}
+
+.sabotage {
+    position: relative;
+}
+
+.icon{
+    size: 100%;
+    width: 2rem;
+    height: auto;
+}
+
+#animationDecollage {
+    position: absolute;
+    bottom: 3rem;
+    left: -2rem;
+    z-index: 10; 
+    width: 20rem;
+    height: auto;
+}
+
+#animationSabotage {
+    position: absolute;
+    bottom: 5rem;
+    right: -2rem;
+    z-index: 10; 
+    width: 22rem;
+    height: auto;
+}

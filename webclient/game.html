@@ -3,75 +3,88 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Scores en direct</title>
-  <style>
-    body {
-      font-family: system-ui, sans-serif;
-      background: #f4f4f4;
-      color: #222;
-      margin: 2em;
-    }
-    .score-box {
-      background: #fff;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px #0001;
-      padding: 1em 2em;
-      margin-bottom: 1em;
-      display: inline-block;
-      min-width: 180px;
-      text-align: center;
-    }
-    .decollage { color: #27ae60; }
-    .sabotage { color: #c0392b; }
-    .general   { color: #2980b9; font-weight: bold; }
-    .progress-container {
-      width: 400px;
-      height: 40px;
-      background: #eee;
-      border-radius: 20px;
-      margin: 2em auto 1em auto;
-      box-shadow: 0 2px 8px #0001;
-      overflow: hidden;
-      position: relative;
-    }
-    .progress-bar {
-      height: 100%;
-      background: linear-gradient(90deg, #c0392b 0%, #27ae60 100%);
-      width: 50%;
-      transition: width 0.3s;
-      border-radius: 20px 0 0 20px;
-      position: absolute;
-      left: 0;
-      top: 0;
-    }
-    .progress-label {
-      position: absolute;
-      width: 100%;
-      text-align: center;
-      line-height: 40px;
-      font-weight: bold;
-      color: #222;
-      z-index: 2;
-      pointer-events: none;
-    }
-  </style>
+  <link rel="stylesheet" href="style-game.css" />
+  <title>Cosmic Katy</title>
 </head>
+
+ <script
+        src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.3.0/dist/dotlottie-wc.js"
+        type="module">
+    </script>
+  <script
+        src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.3.0/dist/dotlottie-wc.js"
+        type="module">
+  </script>
+
+
 <body>
-  <div class="score-box decollage">
+  <div class="hidden">
+    <div class="score-box decollage">
     Score Décollage : <span id="scoreDecollage">0</span>
-  </div>
-  <div class="score-box sabotage">
-    Score Sabotage : <span id="scoreSabotage">0</span>
-  </div>
-  <div class="progress-container">
-    <div class="progress-bar" id="progressBar"></div>
-    <div class="progress-label" id="progressLabel">50%</div>
-  </div>
-  <div class="score-box general">
+    </div>
+    <div class="score-box sabotage">
+      Score Sabotage : <span id="scoreSabotage">0</span>
+    </div>
+      <div class="score-box general">
     Score Général : <span id="scoreGeneral">0</span>
+    </div>
   </div>
 
-  <script>
+
+  <div id="container">
+    <div class="rowTop">
+        <div class="colTop">
+            <img src="" alt="qrCodeDecollage">
+            <img class="logo" src="web-client-png/logo.png" alt=""> 
+        </div>    
+        <img src="" alt="qrCodeSabotage">
+    </div>
+  <div class="fuse-container">
+    
+    <img class="progress-frame" src="web-client-png/fuse.png" alt="Contour de la jauge" />
+
+    <div class="progress-container">
+      <div class="progress-bar-container">
+        <div class="progress-bar" id="progressBar"></div>
+        <div class="progress-label" id="progressLabel">50%</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="containerbottom">
+        <div id="decollage">
+            <div id="connexionDecollage">
+                <img class="icon" src="web-client-svg/icon.svg" alt="icon">
+                <h3 class="count">11</h3>
+            </div>
+            <dotlottie-wc id="animationDecollage"
+                src="https://lottie.host/cd33be5d-4994-4922-aa9f-7c3b693143c1/HZCZvtgXRV.lottie"
+                autoplay
+                speed="1"
+                loop>
+            </dotlottie-wc>
+            <img class="imageDecollage" src="web-client-png/bulleDecollage copie.png" alt="">
+        </div>
+        <div id="sabotage">
+            <div id="connexionSabotage">
+                <img class="icon" src="web-client-svg/icon.svg" alt="icon">
+                <h3 class="count">11</h3>
+            </div>
+                <dotlottie-wc id="animationSabotage"
+                    src="https://lottie.host/049b8547-5945-40cf-8a13-36bfd07f6dc7/halWI7lkGu.lottie"
+                    autoplay
+                    loop>
+                    </dotlottie-wc>
+                </dotlottie-player>
+            <img class="imageSabotage" src="web-client-png/bulleSabotage copie.png" alt="">
+        </div>
+  </div>
+
+
+
+  
+</body>
+<script>
     let scoreDecollage = 0;
     let scoreSabotage = 0;
     let nbSaboteur = 0;
@@ -109,9 +122,16 @@
 
       // Barre de progression
       const percent = getBarPercent();
-      progressBar.style.width = percent + "%";
+      progressBar.style.height = percent + "%";
       progressLabel.textContent = percent + "%";
+
+      // Vérification pour 100%
+      if (percent >= 100) {
+        window.location.href = "http://10.10.16.179/victoireDecollage.html"; // Remplacez par l’URL de votre nouvelle page
+      }else if (percent <= 0) {
+        window.location.href = "http://10.10.16.179/victoireSabotage.html";
     }
+  }
 
     function connect() {
       const ws = new WebSocket(`ws://${location.hostname}:8080`);
@@ -164,5 +184,4 @@
     updateDisplay();
     connect();
   </script>
-</body>
 </html>
