@@ -44,9 +44,21 @@
   </div>
 
   <script>
+
     // --- Connexion WebSocket ouverte au chargement ---
     const ws = new WebSocket(`ws://${location.hostname}:8080`);
 
+    ws.addEventListener('open', () => {
+      console.log("Connexion WebSocket ouverte");
+      ws.send("spawn_decollage");
+    });
+
+    ws.addEventListener('close', () => {
+      console.log("Connexion WebSocket fermée");
+      ws.send("close_decollage");
+    });
+
+    
     // Sélection des éléments HTML
     const progressBar = document.getElementById('progress-bar');
     const chargeButton = document.getElementById('charge-button');

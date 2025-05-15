@@ -74,6 +74,8 @@
   <script>
     let scoreDecollage = 0;
     let scoreSabotage = 0;
+    let nbSaboteur = 0;
+    let nbDecollage = 0;
 
     const decollageEl = document.getElementById("scoreDecollage");
     const sabotageEl = document.getElementById("scoreSabotage");
@@ -118,6 +120,29 @@
         const [team, value] = (await ev.data.text()).split(",");
         const delta = parseInt(value, 10) || 0;
 
+
+        if(team ==="spawn_saboteur"){
+          nbSaboteur++;
+          console.log("nbSaboteur : " + nbSaboteur);
+        }
+
+        if(team ==="close_saboteur"){
+          nbSaboteur--;
+          console.log("nbSaboteur : " + nbSaboteur);
+        }
+
+        
+        if(team ==="spawn_decollage"){
+          nbDecollage++;
+          console.log("nbDecollage : " + nbSaboteur);
+        }
+
+        if(team ==="close_decollage"){
+          nbDecollage--;
+          console.log("nbDecollage : " + nbSaboteur);
+        }
+
+        
         if (team === "Decollage") {
           scoreDecollage += delta;
           console.log(team + " : +" + delta);
@@ -125,6 +150,8 @@
           scoreSabotage += Math.abs(delta);
           console.log(team + " : " + (delta >= 0 ? "+" : "") + delta);
         }
+
+
 
         updateDisplay();
       });

@@ -47,6 +47,16 @@
     // --- Connexion WebSocket ouverte au chargement ---
     const ws = new WebSocket(`ws://${location.hostname}:8080`);
 
+    ws.addEventListener('open', () => {
+      console.log("Connexion WebSocket ouverte");
+      ws.send("spawn_saboteur");
+    });
+
+    ws.addEventListener('close', () => {
+      console.log("Connexion WebSocket fermée");
+      ws.send("close_saboteur");
+    });
+
     // Sélection des éléments HTML
     const progressBar = document.getElementById('progress-bar');
     const chargeButton = document.getElementById('charge-button');
