@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Équipe Sabotage</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <h1 class="title">Equipe sabotage</h1>
+    </header>
+
+    <main class="game-container">
+      <div class="bar-border">
+        <img class="bar-bg" src="web-client-svg/bar.svg" alt="barre de progression" /> 
+        <div class="bar-container">
+          <div class="zero-zone zero-zone-top"></div>
+          <div class="optimal-zone"></div>
+          <div class="zero-zone zero-zone-bottom"></div>
+          <div id="progress-bar"></div>
+        </div>
+      </div>
+
+      <div class="score">
+        Score total : <span id="score">0</span><br>
+        Dernier score : <span id="last-score">+0</span>
+      </div>
+
+      <button id="charge-button" aria-label="Charger"></button>
+    </main>
+
+    <footer class="buttonContent">
+      <div class="buttonBorder">
+        <img class="borderSvg" src="web-client-svg/border.svg" alt="bordure bouton">
+        <div class="bonus-progress-bar">
+          <div class="bonus-progress-fill"></div>
+        </div>
+        <button class="buttonBonus" disabled>Bonus</button>
+      </div>
+      <p class="subButton">Progression x2</p>
+    </footer>
+  </div>
+
+  <script>
+    // --- Connexion WebSocket ouverte au chargement ---
+    const ws = new WebSocket(`ws://${location.hostname}:8080`);
+
+    ws.addEventListener('open', () => {
+      console.log("Connexion WebSocket ouverte");
+      ws.send("spawn_saboteur");
+    });
+
+    ws.addEventListener('close', () => {
+      console.log("Connexion WebSocket fermée");
+      ws.send("close_saboteur");
+    });
+
+    // Sélection des éléments HTML
+    const progressBar = document.getElementById('progress-bar');
+    const chargeButton = document.getElementById('charge-button');
+    const lastScoreDisplay = document.getElementById('last-score');
+    const scoreDisplay = document.getElementById('score');
+    const buttonBonus = document.querySelector('.buttonBonus');
+    const bonusProgressFill = document.querySelector('.bonus-progress-fill');
+
+    // Variables du jeu
+    let progress = 0;
+    let isPressing = false;
+    let timer = 0;
+    let score = 0;
+    let interval = null;
+    let lastScore = 0;
+    let bonusProgress = 0;
+    let isBonusActive = false;
+    let scoreMultiplier = 1;
+    let scoreSinceLastBonus = 0;
+
+    // Constantes pour la barre
+    const MAX_PROGRESS = 100;
+    const OPTIMAL_MIN = 70;
+    const OPTIMAL_MAX = 85;
+
+    // Envoi automatique du score via WebSocket
+    function sendLastScore() {
+      if (ws.readyState === WebSocket.OPEN) {
+        ws.send(String("Sabotage,"+lastScore));
+        console.log("Score envoyé via WebSocket :", lastScore);
+      } else {
+        // Si la connexion n'est pas encore ouverte, attends qu'elle le soit
+        ws.addEventListener('open', () => {
+          ws.send(String(lastScore));
+          console.log("Score envoyé via WebSocket (après ouverture) :", lastScore);
+        }, { once: true });
+      }
+    }
+
+    // Met à jour l'affichage de la barre et du score
+    function updateUI() {
+      progressBar.style.height = Math.min(progress, 100) + "%";
+      lastScoreDisplay.textContent = (lastScore > 0 ? "+" : "") + lastScore;
+      scoreDisplay.textContent = score;
+
+      // Mise à jour de la barre bonus
+      if (!isBonusActive) {
+        bonusProgress = Math.min(100, (scoreSinceLastBonus));
+      }
+      bonusProgressFill.style.width = bonusProgress + "%";
+      buttonBonus.disabled = !(bonusProgress >= 100 && !isBonusActive);
+    }
+
+    // Remet la barre à zéro
+    function resetCharge() {
+      progress = 0;
+      timer = 0;
+      clearInterval(interval);
+      interval = null;
+      updateUI();
+    }
+
+    // Gère la montée de la barre pendant l'appui
+    function updateBar() {
+      if (!isPressing) return;
+      timer += 0.016;
+      const acceleration = 1 + Math.pow(timer, 2.5);
+      progress += acceleration * 1.5;
+
+      if (progress >= MAX_PROGRESS) {
+        lastScore = -10 * scoreMultiplier;
+        score += lastScore;
+        sendLastScore(); // Envoi automatique du score
+        resetCharge();
+      }
+      updateUI();
+    }
+
+    // Calcule le score quand on relâche le bouton
+    function handleRelease() {
+      if (!isPressing) return;
+      isPressing = false;
+      chargeButton.classList.remove('pressed');
+
+      let points = 0;
+      if (progress > MAX_PROGRESS) {
+        points = -5 * scoreMultiplier;
+      } else if (progress >= OPTIMAL_MIN && progress <= OPTIMAL_MAX) {
+        points = 10 * scoreMultiplier;
+      } else if (
+        (progress >= OPTIMAL_MIN - 10 && progress < OPTIMAL_MIN) ||
+        (progress > OPTIMAL_MAX && progress <= OPTIMAL_MAX + 10)
+      ) {
+        points = 0;
+      } else if (progress >= 0 && progress <= MAX_PROGRESS) {
+        points = 1 * scoreMultiplier;
+      } else {
+        points = -5 * scoreMultiplier;
+      }
+
+      lastScore = points;
+      score += lastScore;
+      if (!isBonusActive) {
+        scoreSinceLastBonus += lastScore;
+      }
+      sendLastScore(); // Envoi automatique du score ici aussi
+      resetCharge();
+    }
+
+    // Gestion des événements
+    chargeButton.addEventListener('contextmenu', e => e.preventDefault());
+
+    chargeButton.addEventListener('mousedown', e => {
+      e.preventDefault();
+      chargeButton.classList.add('pressed');
+      if (interval) clearInterval(interval);
+      isPressing = true;
+      interval = setInterval(updateBar, 16);
+    });
+    chargeButton.addEventListener('mouseup', handleRelease);
+    chargeButton.addEventListener('mouseleave', handleRelease);
+
+    chargeButton.addEventListener('touchstart', e => {
+      e.preventDefault();
+      chargeButton.classList.add('pressed');
+      if (interval) clearInterval(interval);
+      isPressing = true;
+      interval = setInterval(updateBar, 16);
+    });
+    chargeButton.addEventListener('touchend', e => {
+      e.preventDefault();
+      handleRelease();
+    });
+
+    // Gestion du bonus
+    buttonBonus.addEventListener('click', () => {
+      if (bonusProgress >= 100 && !isBonusActive) {
+        isBonusActive = true;
+        scoreMultiplier = 2;
+        scoreSinceLastBonus = 0;
+        bonusProgress = 100;
+        updateUI();
+
+        const duration = 5000; // 5 secondes
+        const startTime = Date.now();
+
+        function animateBonus() {
+          const elapsed = Date.now() - startTime;
+          if (elapsed >= duration) {
+            isBonusActive = false;
+            scoreMultiplier = 1;
+            bonusProgress = 0;
+            updateUI();
+            return;
+          }
+          bonusProgress = 100 - (elapsed / duration) * 100;
+          bonusProgressFill.style.width = bonusProgress + "%";
+          requestAnimationFrame(animateBonus);
+        }
+
+        animateBonus();
+      }
+    });
+
+    // Initialisation de l'affichage
+    updateUI();
+  </script>
+</body>
+</html>

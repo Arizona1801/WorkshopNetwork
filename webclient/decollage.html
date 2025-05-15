@@ -3,18 +3,18 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Équipe Sabotage</title>
+  <title>Équipe décollage</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="container">
     <header class="header">
-      <h1 class="title">Equipe sabotage</h1>
+      <h1 class="decollage">Equipe décollage</h1>
     </header>
 
     <main class="game-container">
       <div class="bar-border">
-        <img class="bar-bg" src="bar.svg" alt="barre de progression" /> 
+        <img class="bar-bg" src="web-client-svg/bar.svg" alt="barre de progression" /> 
         <div class="bar-container">
           <div class="zero-zone zero-zone-top"></div>
           <div class="optimal-zone"></div>
@@ -33,7 +33,7 @@
 
     <footer class="buttonContent">
       <div class="buttonBorder">
-        <img class="borderSvg" src="border.svg" alt="bordure bouton">
+        <img class="borderSvg" src="web-client-svg/border.svg" alt="bordure bouton">
         <div class="bonus-progress-bar">
           <div class="bonus-progress-fill"></div>
         </div>
@@ -44,9 +44,21 @@
   </div>
 
   <script>
+
     // --- Connexion WebSocket ouverte au chargement ---
     const ws = new WebSocket(`ws://${location.hostname}:8080`);
 
+    ws.addEventListener('open', () => {
+      console.log("Connexion WebSocket ouverte");
+      ws.send("spawn_decollage");
+    });
+
+    ws.addEventListener('close', () => {
+      console.log("Connexion WebSocket fermée");
+      ws.send("close_decollage");
+    });
+
+    
     // Sélection des éléments HTML
     const progressBar = document.getElementById('progress-bar');
     const chargeButton = document.getElementById('charge-button');
@@ -75,7 +87,7 @@
     // Envoi automatique du score via WebSocket
     function sendLastScore() {
       if (ws.readyState === WebSocket.OPEN) {
-        ws.send(String(lastScore));
+        ws.send(String("Decollage,"+lastScore));
         console.log("Score envoyé via WebSocket :", lastScore);
       } else {
         // Si la connexion n'est pas encore ouverte, attends qu'elle le soit

@@ -57,6 +57,19 @@ p {
   gap: 20px;
 }
 
+.decollage {
+  color: var(--green);
+  font-size: 3rem;
+  gap: 20px;
+}
+
+.titleEquipe {
+  color: var(--white);
+  font-size: 3rem;
+  gap: 20px;
+  margin: 12px;
+}
+
 .subtitle {
   font-size: 1.75rem;
   line-height: 100%;
@@ -97,7 +110,21 @@ p {
   display: flex;
   align-items: flex-end; /* progress-bar monte vers le haut */
   z-index: -1;
+}
 
+.bar-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('web-client-svg/cadre.svg'); /* Chemin mis à jour pour le SVG */
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  pointer-events: none;
+  z-index: 3;
 }
 
 #progress-bar {
@@ -126,10 +153,10 @@ p {
   position: absolute;
   width: 100%;
   background-color: #4C1452;
-  background-image: url('mortel.png');
-  background-size: 10px 10px; /* Largeur et hauteur de l'image en pixels */
-  background-repeat: no-repeat; /* Empêche la répétition de l'image */
-  background-position: center; /* Centre l'image dans la zone */
+  background-image: url('web-client-png/mortel.png'); /* Chemin mis à jour pour le PNG */
+  background-size: 10px 10px; /* Exemple de taille */
+  background-repeat: no-repeat;
+  background-position: center;
   pointer-events: none;
   z-index: 1;
 }
@@ -144,12 +171,11 @@ p {
   height: 10%;  /* 10% de la barre, juste en dessous de la zone optimale */
 }
 
-
 /* ========== Charge Button ========== */
 #charge-button {
   width: 120px;
   height: 120px;
-  background-image: url('bouton-normal.svg');
+  background-image: url('web-client-svg/bouton-normal.svg');
   background-size: cover;
   background-color: transparent;
   border: none;
@@ -159,7 +185,7 @@ p {
 }
 
 #charge-button.pressed {
-  background-image: url('bouton-press.svg');
+  background-image: url('web-client-svg/bouton-press.svg');
 }
 
 button:focus {
@@ -233,4 +259,82 @@ button:focus {
   width: 0%;
   background: var(--green, #4caf50);
   transition: width 0.2s;
+}
+
+
+/* ========== Rules ========== */
+
+.rule-line {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+  gap: 12px;
+}
+
+.button-img {
+  width: 32px;
+  height: 32px;
+}
+
+.rules-img {
+  margin: 20px, 0px;
+  display: flex; 
+  flex-direction: row;
+}
+
+.pts0 {
+  color: #B00020;
+  font-size: 2rem;
+}
+.pts30 {
+  color: #00e6ff;
+  font-size: 2rem;
+}
+
+.rules-text {
+  font-size: 2rem;
+  color: rgba(255, 255, 255, 0.733);
+  text-align: left;
+  font-weight: 400;
+}
+
+.kattysBottom {
+  position: absolute;
+  bottom: -20px;
+  margin: 0;
+  padding: 0;
+  left: 0;
+}
+
+.kattys-img {
+
+  width: 100%;
+  height: fit;
+  margin: 20px, 0px;
+}
+
+
+.button-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  width: 75%;
+}
+
+.containerTeam {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.rules-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  width: 90%;
+  gap: 20px;
 }
