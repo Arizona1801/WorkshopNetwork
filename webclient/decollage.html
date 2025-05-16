@@ -13,6 +13,7 @@
     </header>
 
     <main class="game-container">
+      <!-- Affichage de la barre de progression -->
       <div class="bar-border">
         <img class="bar-bg" src="web-client-svg/bar.svg" alt="barre de progression" /> 
         <div class="bar-container">
@@ -23,20 +24,25 @@
         </div>
       </div>
 
+      <!-- Affichage du score -->
       <div class="score">
         Score total : <span id="score">0</span><br>
         Dernier score : <span id="last-score">+0</span>
       </div>
 
+      <!-- Bouton principal pour charger la barre -->
       <button id="charge-button" aria-label="Charger"></button>
     </main>
 
     <footer class="buttonContent">
       <div class="buttonBorder">
+        <!-- Bordure SVG autour du bouton bonus -->
         <img class="borderSvg" src="web-client-svg/border.svg" alt="bordure bouton">
+        <!-- Barre de progression du bonus -->
         <div class="bonus-progress-bar">
           <div class="bonus-progress-fill"></div>
         </div>
+        <!-- Bouton bonus (activable quand la barre est pleine) -->
         <button class="buttonBonus" disabled>Bonus</button>
       </div>
       <p class="subButton">Progression x2</p>
@@ -44,22 +50,29 @@
   </div>
 
   <script>
-
     // --- Connexion WebSocket ouverte au chargement ---
     const ws = new WebSocket(`ws://${location.hostname}:8080`);
 
+    // Gestion de la déconnexion propre du client (fermeture onglet/page)
+    window.addEventListener('beforeunload', function () {
+      if (ws.readyState === WebSocket.OPEN) {
+        ws.send("close_decollage"); // Informe le serveur qu'un décollage se déconnecte
+        ws.close();
+      }
+    });
+
+    // Quand la connexion WebSocket s'ouvre
     ws.addEventListener('open', () => {
       console.log("Connexion WebSocket ouverte");
-      ws.send("spawn_decollage");
+      ws.send("spawn_decollage"); // Informe le serveur qu'un décollage rejoint la partie
     });
 
+    // Quand la connexion WebSocket se ferme
     ws.addEventListener('close', () => {
       console.log("Connexion WebSocket fermée");
-      ws.send("close_decollage");
     });
 
-    
-    // Sélection des éléments HTML
+    // Sélection des éléments HTML pour l'UI
     const progressBar = document.getElementById('progress-bar');
     const chargeButton = document.getElementById('charge-button');
     const lastScoreDisplay = document.getElementById('last-score');
@@ -168,7 +181,7 @@
       resetCharge();
     }
 
-    // Gestion des événements
+    // Gestion des événements pour le bouton de charge (souris et tactile)
     chargeButton.addEventListener('contextmenu', e => e.preventDefault());
 
     chargeButton.addEventListener('mousedown', e => {

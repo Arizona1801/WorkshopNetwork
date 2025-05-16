@@ -23,6 +23,7 @@ body {
   background-color: var(--blueDark);
   font-family: var(--font-family);
   color: var(--white);
+  overflow: hidden;
 }
 
 /* ========== Text ========== */
@@ -299,20 +300,21 @@ button:focus {
 }
 
 .kattysBottom {
-  position: absolute;
+  position: relative; /* ou absolute si tu veux la placer en bas */
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   bottom: -20px;
   margin: 0;
   padding: 0;
-  left: 0;
 }
 
 .kattys-img {
-
-  width: 100%;
-  height: fit;
-  margin: 20px, 0px;
+  width: 70%;
+  height: auto;
+  display: block;
 }
-
 
 .button-container {
   display: flex;

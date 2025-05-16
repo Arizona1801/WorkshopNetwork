@@ -7,95 +7,95 @@
   <title>Cosmic Katy</title>
 </head>
 
- <script
-        src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.3.0/dist/dotlottie-wc.js"
-        type="module">
-    </script>
-  <script
-        src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.3.0/dist/dotlottie-wc.js"
-        type="module">
-  </script>
-
+<!-- Import des animations Lottie -->
+<script
+  src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.3.0/dist/dotlottie-wc.js"
+  type="module">
+</script>
+<script
+  src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.3.0/dist/dotlottie-wc.js"
+  type="module">
+</script>
 
 <body>
+  <!-- Scores cachés (peuvent être affichés pour debug ou admin) -->
   <div class="hidden">
     <div class="score-box decollage">
-    Score Décollage : <span id="scoreDecollage">0</span>
+      Score Décollage : <span id="scoreDecollage">0</span>
     </div>
     <div class="score-box sabotage">
       Score Sabotage : <span id="scoreSabotage">0</span>
     </div>
-      <div class="score-box general">
-    Score Général : <span id="scoreGeneral">0</span>
+    <div class="score-box general">
+      Score Général : <span id="scoreGeneral">0</span>
     </div>
   </div>
 
-
+  <!-- Conteneur principal du jeu -->
   <div id="container">
+    <!-- Bandeau du haut avec QR codes et logo -->
     <div class="rowTop">
-        <div class="colTop">
-            <img src="" alt="qrCodeDecollage">
-            <img class="logo" src="web-client-png/logo.png" alt=""> 
-        </div>    
-        <img src="" alt="qrCodeSabotage">
+      <div class="colTop">
+        <img src="web-client-svg/qrDecollage.svg" class="qrCode" alt="qrCodeDecollage">
+        <img class="logo" src="web-client-png/logoDeux.png" alt=""> 
+      </div>    
+      <img src="web-client-svg/qrSabotage.svg" class="qrCode" alt="qrCodeSabotage">
     </div>
 
-  <div>
-
-    <img class="katy-smile" src="web-client-png/katyHappy.png" alt="Katy" />
-    <div class="fuse-container">
-
-      
-      <img class="progress-frame" src="web-client-png/fuse.png" alt="Contour de la jauge" />
-
-      <div class="progress-container">
-        <div class="progress-bar-container">
-          <div class="progress-bar" id="progressBar"></div>
-          <div class="progress-label" id="progressLabel">50%</div>
+    <!-- Zone centrale avec Katy et la jauge -->
+    <div>
+      <!-- Image de Katy qui change selon la progression -->
+      <img class="katy-smile" src="web-client-png/katyHappy.png" alt="Katy" />
+      <div class="fuse-container">
+        <!-- Image de contour de la jauge (PNG) -->
+        <img class="progress-frame" src="web-client-png/fuse.png" alt="Contour de la jauge" />
+        <!-- Jauge verticale de progression -->
+        <div class="progress-container">
+          <div class="progress-bar-container">
+            <div class="progress-bar" id="progressBar"></div>
+            <div class="progress-label" id="progressLabel">50%</div>
+          </div>
         </div>
       </div>
     </div>
-
-  </div>
   
-  <div id="containerbottom">
-        <div id="decollage">
-            <div id="connexionDecollage">
-                <img class="icon" src="web-client-svg/icon.svg" alt="icon">
-                <h3 class="count">11</h3>
-            </div>
-            <dotlottie-wc id="animationDecollage"
-                src="https://lottie.host/cd33be5d-4994-4922-aa9f-7c3b693143c1/HZCZvtgXRV.lottie"
-                autoplay
-                speed="1"
-                loop>
-            </dotlottie-wc>
-            <img class="imageDecollage" src="web-client-png/bulleDecollage copie.png" alt="">
+    <!-- Zone du bas avec les équipes et animations -->
+    <div id="containerbottom">
+      <!-- Bloc équipe décollage -->
+      <div id="decollage">
+        <div id="connexionDecollage">
+          <img class="icon" src="web-client-svg/icon.svg" alt="icon">
+          <h3 class="count">11</h3>
         </div>
-        <div id="sabotage">
-            <div id="connexionSabotage">
-                <img class="icon" src="web-client-svg/icon.svg" alt="icon">
-                <h3 class="count">11</h3>
-            </div>
-                <dotlottie-wc id="animationSabotage"
-                    src="https://lottie.host/049b8547-5945-40cf-8a13-36bfd07f6dc7/halWI7lkGu.lottie"
-                    autoplay
-                    loop>
-                    </dotlottie-wc>
-                </dotlottie-player>
-            <img class="imageSabotage" src="web-client-png/bulleSabotage copie.png" alt="">
+        <!-- Animation Lottie pour décollage -->
+        <dotlottie-wc id="animationDecollage"
+          src="https://lottie.host/a1aaba9d-e9e6-4da5-a146-8c4fa66d0d5a/EazSvDj0MU.lottie"
+          autoplay
+          loop>
+        </dotlottie-wc>
+        <img class="imageDecollage" src="web-client-png/bulleDecollage copie.png" alt="">
+      </div>
+      <!-- Bloc équipe sabotage -->
+      <div id="sabotage">
+        <div id="connexionSabotage">
+          <img class="icon" src="web-client-svg/icon.svg" alt="icon">
+          <h3 class="count">11</h3>
         </div>
+        <!-- Animation Lottie pour sabotage -->
+        <dotlottie-wc id="animationSabotage"
+          src="https://lottie.host/8ec7dc6c-c6c2-4489-b8d8-bc2ed0563786/A3BIIaN3Vu.lottie"
+          autoplay
+          loop>
+        </dotlottie-wc>
+        <img class="imageSabotage" src="web-client-png/bulleSabotage copie.png" alt="">
+      </div>
+    </div>
   </div>
-
-
-
-  
 </body>
+<!-- Le script JS est placé ici pour gérer la logique du jeu -->
 <script>
     let scoreDecollage = 0;
     let scoreSabotage = 0;
-    let nbSaboteur = 0;
-    let nbDecollage = 0;
 
     const decollageEl = document.getElementById("scoreDecollage");
     const sabotageEl = document.getElementById("scoreSabotage");
@@ -135,16 +135,16 @@
       // Changer l'image de Katy en fonction du pourcentage
       const katyImage = document.querySelector('.katy-smile');
       if (percent < 50) {
-        katyImage.src = "web-client-png/katyHangry.png"; // Remplacez par le chemin de l'image "triste"
+        katyImage.src = "web-client-svg/katyHangryBulle.svg"; // Remplacez par le chemin de l'image "triste"
       } else {
-        katyImage.src = "web-client-png/katyHappy.png"; // Remplacez par le chemin de l'image "heureuse"
+        katyImage.src = "web-client-svg/katyHapyBulle.svg"; // Remplacez par le chemin de l'image "heureuse"
       }
 
       // Vérification pour 100%
       if (percent >= 100) {
-        window.location.href = "http://10.10.16.179/victoireDecollage.html"; // Remplacez par l’URL de votre nouvelle page
+        window.location.href = "victoireDecollage.html"; // Remplacez par l’URL de votre nouvelle page
       } else if (percent <= 0) {
-        window.location.href = "http://10.10.16.179/victoireSabotage.html";
+        window.location.href = "victoireSabotage.html";
       }
     }
 
@@ -155,28 +155,6 @@
         const [team, value] = (await ev.data.text()).split(",");
         const delta = parseInt(value, 10) || 0;
 
-
-        if(team ==="spawn_saboteur"){
-          nbSaboteur++;
-          console.log("nbSaboteur : " + nbSaboteur);
-        }
-
-        if(team ==="close_saboteur"){
-          nbSaboteur--;
-          console.log("nbSaboteur : " + nbSaboteur);
-        }
-
-        
-        if(team ==="spawn_decollage"){
-          nbDecollage++;
-          console.log("nbDecollage : " + nbSaboteur);
-        }
-
-        if(team ==="close_decollage"){
-          nbDecollage--;
-          console.log("nbDecollage : " + nbSaboteur);
-        }
-
         
         if (team === "Decollage") {
           scoreDecollage += delta;
@@ -186,10 +164,29 @@
           console.log(team + " : " + (delta >= 0 ? "+" : "") + delta);
         }
 
+        if(team === "spawn_saboteur"){
+        
+          console.log("Nombre de Saboteurs : " + value);
+        }
 
+        if(team === "spawn_decollage"){
+
+          console.log("Nombre de Décollage : " + value);
+        }
+
+        if(team === "close_saboteur"){
+
+          console.log("Nombre de Saboteurs : " + value);
+        }
+
+        if(team === "close_decollage"){
+
+          console.log("Nombre de Décollage : " + value);
+        }
 
         updateDisplay();
       });
+
 
       ws.addEventListener("close", () => {
         setTimeout(connect, 1000);

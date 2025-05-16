@@ -7,18 +7,25 @@
     <link rel="stylesheet" href="victoireSabotage.css">
 </head>
 <body>
-<video autoplay muted loop id="myVideo">
-  <source src="video/videoSabotage copie.mp4" type="video/mp4">
+<!-- Vidéo de fond, lue automatiquement -->
+<video autoplay id="myVideo">
+  <source src="video/defaite.mp4" type="video/mp4">
 </video>
+
+    <!-- Conteneur principal du contenu de la page -->
     <div id="container">
+        <!-- Titre de la page -->
         <h1 id="title">Victory</h1>
+        <!-- Image de défaite pour le sabotage -->
         <img src="web-client-png/labelSabotage copie.png" alt="boutonVictoire" id="boutonVictoire">
-    <div id="containerbottom">
-        <span id="text">Nouvelle partie dans :</span>
-        <span id="timer">10</span>
-    </div>
+        <!-- Section en bas pour le texte et le timer -->
+        <div id="containerbottom">
+            <span id="text">Nouvelle partie dans :</span>
+            <span id="timer">10</span>
+        </div>
     </div>
 
+    <!-- Script pour gérer le timer et la logique de redirection -->
     <script src="scriptDecollage.js"></script>
 </body>
 </html>
